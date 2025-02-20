@@ -36,7 +36,7 @@ export const submitReview = async (req: CustomRequest, res: Response) => {
       message: "Review submitted successfully",
       rating,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error"});
   }

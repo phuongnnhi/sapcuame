@@ -8,9 +8,7 @@ export const createProductSchema = Joi.object({
     description: Joi.string().required().messages({
       'string.empty': 'Description is required',
     }),
-    image: Joi.string().uri().optional().messages({
-      'string.uri': 'Image must be a valid URL',
-    }),
+    images: Joi.array().items(Joi.string().uri()).optional(),
     productType: Joi.string().required().messages({
       'string.empty': 'Product type is required',
     }),

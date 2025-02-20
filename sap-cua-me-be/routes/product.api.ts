@@ -1,11 +1,8 @@
 import express from 'express';
-
-
 import { getProducts } from '../controllers/products/getProduct.controller';
 import { getProductById } from '../controllers/products/getProductById.controller';
-// import { isAdmin } from '../middleware/role';
-
-// import { authenticateUser } from '../middleware/authMiddleware';
+import { getFeaturedProducts } from '../controllers/products/getFeaturedProducts.controller';
+import { getBestSellerProducts } from '../controllers/products/getBestSeller.controller';
 import { addProduct } from '../controllers/products/addProduct.controller';
 import { updateProduct } from '../controllers/products/updateProduct.controller';
 import { deleteProduct } from '../controllers/products/deleteProduct.controller';
@@ -13,6 +10,7 @@ import { validateMiddleware } from '../middleware/validator';
 import { idSchema } from '../schemas/products/idSchema';
 import { createProductSchema } from '../schemas/products/createProduct.schema';
 import { updateProductSchema } from '../schemas/products/updateProduct.schema';
+import upload from '../middleware/uploadMiddleware'; 
 
 const router = express.Router();
 
@@ -23,6 +21,8 @@ const router = express.Router();
  * @access Public
  */
 router.get('/', getProducts);
+router.get('/featured', getFeaturedProducts)
+router.get('/bestseller', getBestSellerProducts)
 
 /**
  * @route GET api/product/:id
@@ -30,19 +30,20 @@ router.get('/', getProducts);
  * @access Public
  */
 router.get('/:id', validateMiddleware(idSchema, 'params'), getProductById);
+
 /**
  * @route POST api/admin/products
- * @description Add a new product
+ * @description Add a new product with image upload to Cloudinary
  * @access Admin
  */
-router.post('/', validateMiddleware(createProductSchema, 'body'), addProduct);
+router.post('/', upload.array('images', 5), validateMiddleware(createProductSchema, 'body'), addProduct);
 
 /**
  * @route PUT api/admin/products/:id
- * @description Update an existing product
+ * @description Update an existing product with new image uploads to Cloudinary
  * @access Admin
  */
-router.put('/:id', validateMiddleware(idSchema, 'params'), validateMiddleware(updateProductSchema, 'body'), updateProduct);
+router.put('/:id', upload.array('images', 5), validateMiddleware(idSchema, 'params'), validateMiddleware(updateProductSchema, 'body'), updateProduct);
 
 /**
  * @route DELETE api/admin/products/:id
@@ -50,4 +51,5 @@ router.put('/:id', validateMiddleware(idSchema, 'params'), validateMiddleware(up
  * @access Admin
  */
 router.delete('/:id', validateMiddleware(idSchema, 'params'), deleteProduct);
+
 export default router;

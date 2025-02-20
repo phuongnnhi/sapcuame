@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/User";
+import { CustomRequest } from '..';
 
-export const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
+export const authenticateUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
     try {
         // Get the token from the Authorization header
         const authHeader = req.headers.authorization;
