@@ -22,7 +22,7 @@ export const editReview = async (req: CustomRequest, res: Response) => {
       await existingReview.save();
   
       res.status(200).json({ message: "Review updated successfully", review: existingReview });
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error", error: error.message });
     }

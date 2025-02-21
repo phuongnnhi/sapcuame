@@ -16,7 +16,7 @@ export const deleteReview = async (req: CustomRequest, res: Response) => {
       }
   
       res.status(200).json({ message: "Review deleted successfully", review: deletedReview});
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error"});
     }

@@ -1,14 +1,16 @@
-"use client"
+// src/app/provider.tsx
+"use client";
 
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react"
-import { ThemeProvider } from "next-themes"
+import { ChakraProvider } from "@chakra-ui/react";
+import { ThemeProvider } from "next-themes";
+import system from "../theme"; // Adjust the path if necessary
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export function Provider({ children }: { children: React.ReactNode }) {
   return (
-    <ChakraProvider value={defaultSystem}>
+    <ChakraProvider value={system}>
       <ThemeProvider attribute="class" disableTransitionOnChange>
-        {props.children}
+        {children}
       </ThemeProvider>
     </ChakraProvider>
-  )
+  );
 }
