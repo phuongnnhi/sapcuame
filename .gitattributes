@@ -1,0 +1,6 @@
+# .gitattributes
+
+# Ensure all text files use LF in the repo.
+# "text=auto" means Git will treat these files as text and convert line endings.
+# "eol=lf" sets the line ending that is stored in the repository to LF.
+* text=auto eol=lf
