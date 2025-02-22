@@ -23,6 +23,7 @@ import { Footer } from "@/components/Footer";
 import { FeaturedProducts } from "@/components/Homepage/FeaturedProducts";
 import MarketRules from "@/components/Homepage/MarketRules";
 import { BestSellers } from "@/components/Homepage/BestSellers";
+import CategorySection from "@/components/Homepage/CategorySection";
 
 export default function Page() {
   return (
@@ -33,6 +34,7 @@ export default function Page() {
           <FeaturedProducts/>
           <MarketRules/>
           <BestSellers/>
+          <CategorySection/>
           <Footer />
         </Stack>
   );

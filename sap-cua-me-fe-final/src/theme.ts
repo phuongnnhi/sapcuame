@@ -6,12 +6,13 @@ const system = createSystem(defaultConfig, {
     tokens: {
       colors: {
         brand: {
-          50: { value: "#F5E6DA" },
+          50: { value: "#FCF6FF" },
           100: { value: "#D9D9D9" },
           300: { value: "#F0F0F0" },
-          500: { value: "#D9915B" },
-          700: { value: "#5C4033" },
-          '700Alpha80': {value: "#5C4033CC"}
+          500: { value: "#7C7495" },
+          700: { value: "#9678B6" },
+          '700Alpha80': {value: "#9678B6CC"},
+          '500Alpha80': {value: "#7C7495CC"}
         },
       },
       fonts: {
