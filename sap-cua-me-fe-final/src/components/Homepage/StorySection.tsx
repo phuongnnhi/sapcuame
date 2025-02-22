@@ -5,6 +5,13 @@ const MotionBox = motion(Box);
 
 export const StorySection = () => {
   return (
+    <Box
+      backgroundImage="url('/images/hoagiay.png')" 
+      backgroundSize="contain"
+      backgroundPosition="left top"
+      backgroundRepeat="no-repeat"
+      py="10"
+    >
     <Container maxW="7xl" py="10">
     <Flex
       direction={{ base: "column", md: "row" }}
@@ -68,5 +75,6 @@ export const StorySection = () => {
       </Box>
     </Flex>
     </Container>
+    </Box>
   );
 };

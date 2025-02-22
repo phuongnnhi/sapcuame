@@ -10,6 +10,14 @@ const categories = [
 
 const CategorySection = () => {
   return (
+    <Box
+      backgroundImage="url('/images/chobackground.png')" 
+      backgroundSize="contain"
+      backgroundPosition="right bottom"
+      backgroundRepeat="no-repeat"
+      py="10"
+      paddingBottom="35"
+    >
     <Container maxW="7xl" py="10">
       <Box bg="brand.500Alpha80" py="10" borderRadius="2xl">
         <Container maxW="7xl">
@@ -40,6 +48,7 @@ const CategorySection = () => {
         </Container>
       </Box>
     </Container>
+    </Box>
   );
 };
 
