@@ -32,7 +32,7 @@ interface Product {
   productType: string;
   brand: string;
   category: string[];
-  tags: string[];
+  tags?: string[];
   price: number;
   isAvailable: boolean;
   isDeleted: boolean;

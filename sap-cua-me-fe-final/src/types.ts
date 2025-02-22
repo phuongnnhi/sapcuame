@@ -2,13 +2,16 @@ export interface Product {
     _id: string;
     name: string;
     description: string;
-    image?: string;
+    images?: string[];
     productType: string;
     brand: string;
+    colors?: string[];
     category: string[];
-    tags: string[];
+    tags?: string[];
     price: number;
     isAvailable: boolean;
+    isFeatured: boolean;
+    bestSeller: boolean;
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
