@@ -29,6 +29,24 @@ export interface ProductResponse {
     total: number;
 }
 
+export interface ProductCart {
+    _id: string;
+    productId: Product; // Populate with full product details
+    cartId: string;
+    quantity: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface Cart {
+    _id: string;
+    userId: string;
+    products: ProductCart[];
+    addedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 // export interface Order {
 //     _id: string;
 //     userId: string;

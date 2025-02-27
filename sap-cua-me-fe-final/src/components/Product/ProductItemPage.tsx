@@ -13,11 +13,12 @@ import {
   SimpleGrid,
   Container,
   Breadcrumb,
+  Separator,
 } from "@chakra-ui/react";
 import { getProductById, getProducts } from "@/app/apiFunctions";
 import { ProductItem } from "./ProductCard";
 import { ProductColorPicker } from "./product-color-picker";
-import { Divider } from "@mui/material";
+// import { Divider } from "@mui/material";
 import { LuHouse, LuShoppingBag, LuSmile } from "react-icons/lu";
 
 interface ItemPageProps {
@@ -31,31 +32,25 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedVariety, setSelectedVariety] = useState(
-    product?.varieties?.[0] || null
-  );
+  const [selectedVariety, setSelectedVariety] = useState<
+    Product["varieties"][0] | null
+  >(null);
   const [currentPrice, setCurrentPrice] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (product) {
-      if (product.varieties && product.varieties.length > 0) {
-        setSelectedVariety(product.varieties[0]);
-        setCurrentPrice(product.varieties[0].price);
-      } else if (Array.isArray(product.price)) {
-        setCurrentPrice(product.price[0]);
-      }
-      setCurrentPrice(product.price);
-    }
-  }, [product]);
-
+  /** Fetch product data */
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(null);
+
         const fetchedProduct = await getProductById(productId);
+        if (!fetchedProduct) throw new Error("Product not found.");
+
         setProduct(fetchedProduct);
         setSelectedImage(fetchedProduct.images?.[0] || null);
 
+        // Fetch related products
         const { products } = await getProducts({
           category: fetchedProduct.category[0],
           limit: 5,
@@ -64,7 +59,6 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
         const filteredProducts = products
           .filter((p) => p._id !== productId)
           .slice(0, 4);
-
         setRelatedProducts(filteredProducts);
       } catch (err) {
         console.error("Error fetching item page data:", err);
@@ -77,31 +71,45 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
     fetchData();
   }, [productId]);
 
-  if (loading) return <Text>Loading...</Text>;
+  /** Set initial variety and price after product loads */
+  useEffect(() => {
+    if (product && product.varieties?.length > 0) {
+      setSelectedVariety(product.varieties[0]);
+      setCurrentPrice(product.varieties[0].price);
+    } else if (product) {
+      setCurrentPrice(
+        Array.isArray(product.price) ? product.price[0] : product.price
+      );
+    }
+  }, [product]);
+
+  if (loading) return <Text>Loading product...</Text>;
   if (error) return <Text>{error}</Text>;
   if (!product) return <Text>Product not found.</Text>;
 
   return (
     <Container maxW="7xl" py="10">
-        <Breadcrumb.Root marginBottom="10">
-              <Breadcrumb.List>
-                <Breadcrumb.Item gap="2">
-                <LuHouse/> 
-                  <Breadcrumb.Link href="/">Trang chủ</Breadcrumb.Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Separator />
-                <Breadcrumb.Item gap="2">
-                <LuShoppingBag/> 
-                  <Breadcrumb.Link href="/san-pham">Sản phẩm</Breadcrumb.Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Separator />
-                <Breadcrumb.Item gap="2">
-                <LuSmile/> 
-                  <Breadcrumb.Link href="/san-pham/{product.id}">{product.name}</Breadcrumb.Link>
-                </Breadcrumb.Item>
-              </Breadcrumb.List>
-            </Breadcrumb.Root>
-        
+      <Breadcrumb.Root marginBottom="10">
+        <Breadcrumb.List textStyle="md">
+          <Breadcrumb.Item gap="2">
+            <LuHouse />
+            <Breadcrumb.Link href="/">Trang chủ</Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator />
+          <Breadcrumb.Item gap="2">
+            <LuShoppingBag />
+            <Breadcrumb.Link href="/san-pham">Sản phẩm</Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator />
+          <Breadcrumb.Item gap="2">
+            <LuSmile />
+            <Breadcrumb.Link href={`/san-pham/${product._id}`}>
+              {product.name}
+            </Breadcrumb.Link>
+          </Breadcrumb.Item>
+        </Breadcrumb.List>
+      </Breadcrumb.Root>
+
       <Box p={8}>
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={20}>
           {/* Left Side - Product Gallery */}
@@ -155,7 +163,7 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
             {/* Phân loại sản phẩm */}
             {product.varieties && product.varieties.length > 0 && (
               <>
-                <Divider orientation="horizontal" />
+                <Separator size="sm" width="100%" orientation="horizontal" />
                 <Text color="brand.500" fontWeight="bold">
                   Chọn loại sản phẩm
                 </Text>
@@ -195,7 +203,7 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
             {/* Màu sắc sản phẩm */}
             {product.colors && product.colors.length > 0 && (
               <>
-                <Divider orientation="horizontal" />
+                <Separator size="sm" width="100%" orientation="horizontal" />
                 <Text color="brand.500" fontWeight="bold">
                   Chọn màu
                 </Text>
@@ -206,7 +214,7 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
             {/* Kích cỡ sản phẩm */}
             {product.size && product.size.length > 0 && (
               <>
-                <Divider orientation="horizontal" />
+                <Separator size="sm" width="100%" orientation="horizontal" />
                 <Text color="brand.500" fontWeight="bold">
                   Chọn kích cỡ
                 </Text>
@@ -228,7 +236,7 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
               </>
             )}
 
-            <Divider orientation="horizontal" />
+            <Separator size="sm" width="100%" orientation="horizontal" />
             <Button bg="brand.700" size="lg">
               Thêm vào giỏ hàng
             </Button>
@@ -236,10 +244,11 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
         </Grid>
 
         <Box mt="12" bg="brand.pastel" borderRadius="lg" p={10} boxShadow="md">
-        <Heading size="2xl" mb={4} color="brand.500">
-          Mô tả sản phẩm
-        </Heading>
-        <Text whiteSpace="pre-line">{product.description}</Text></Box>
+          <Heading size="2xl" mb={4} color="brand.500">
+            Mô tả sản phẩm
+          </Heading>
+          <Text whiteSpace="pre-line">{product.description}</Text>
+        </Box>
 
         {/* Related Products Section */}
         <Box mt={12}>

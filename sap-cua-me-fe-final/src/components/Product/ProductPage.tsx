@@ -65,7 +65,7 @@ export const ProductPage: React.FC = () => {
     <Container maxW="7xl" py="10">
 
     <Breadcrumb.Root marginBottom="10">
-      <Breadcrumb.List>
+      <Breadcrumb.List textStyle="md">
         <Breadcrumb.Item gap="2">
         <LuHouse/> 
           <Breadcrumb.Link href="#">Trang chủ</Breadcrumb.Link>

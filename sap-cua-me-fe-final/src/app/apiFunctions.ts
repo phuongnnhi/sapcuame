@@ -1,6 +1,6 @@
 import { Order, OrderResponse } from "@/components/Admin/OrderBoard/types";
 import apiService from "./apiServices";
-import { Product, ProductResponse } from "@/types";
+import { Cart, Product, ProductResponse } from "@/types";
 
 // Get all orders
 export const getAllOrders = async (): Promise<OrderResponse> => {
@@ -124,6 +124,51 @@ export const deleteProduct = async (productId: string): Promise<void> => {
     await apiService.delete(`/product/${productId}`);
   } catch (error) {
     console.error(`Error deleting product ${productId}:`, error);
+    throw error;
+  }
+};
+
+
+//CART API 
+// Add product to cart
+export const addToCart = async (productId: string, quantity: number): Promise<Cart> => {
+  try {
+    const response = await apiService.post<Cart>("/cart", { productId, quantity });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    throw error;
+  }
+};
+
+// Get user cart
+export const getCart = async (): Promise<Cart> => {
+  try {
+    const response = await apiService.get<Cart>("/cart");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    throw error;
+  }
+};
+
+// Remove an item from cart
+export const removeCartItem = async (cartItemId: string): Promise<void> => {
+  try {
+    await apiService.delete(`/cart/${cartItemId}`);
+  } catch (error) {
+    console.error("Error removing cart item:", error);
+    throw error;
+  }
+};
+
+// Update cart item quantity
+export const updateCartItem = async (cartItemId: string, quantity: number): Promise<Cart> => {
+  try {
+    const response = await apiService.put<Cart>(`/cart/${cartItemId}`, { quantity });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating cart item:", error);
     throw error;
   }
 };

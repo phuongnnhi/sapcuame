@@ -14,7 +14,7 @@ export const SearchField = (props: Omit<InputGroupProps, 'children'>) => {
       }
       {...props}
     >
-      <Input placeholder="Search" variant="subtle" borderRadius="lg" />
+      <Input placeholder="Tìm kiếm sản phẩm" variant="subtle" borderRadius="lg" />
     </InputGroup>
   )
 }
