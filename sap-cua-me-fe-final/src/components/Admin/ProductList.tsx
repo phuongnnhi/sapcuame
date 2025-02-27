@@ -22,37 +22,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-
-// Define the Product interface
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  images?: string[];
-  productType: string;
-  brand: string;
-  category: string[];
-  tags?: string[];
-  price: number;
-  isAvailable: boolean;
-  isDeleted: boolean;
-}
-
-// Define the response structure for products
-interface ProductResponse {
-  products: Product[];
-  total: number;
-}
-
-// Category options
-const categories = [
-  "chăm sóc tóc",
-  "chăm sóc da",
-  "trang điểm",
-  "chăm sóc cơ thể",
-  "nội y",
-  "chăm sóc móng",
-];
+import type { Product, ProductResponse } from "@/types";
+import { categories } from "@/constants/ProductCat";
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

@@ -19,8 +19,7 @@ type RecordData = {
   price: string | number;
   "size (array)"?: string; // Comma-separated string in Excel
   "colors (array)"?: string; // Comma-separated string in Excel
-  "varieties (names)"?: string; // Comma-separated names of varieties
-  "varieties (prices)"?: string; // Comma-separated prices for varieties
+  "varieties (array)"?: string; // Comma-separated names of varieties
   isAvailable?: string | boolean;
   isFeatured?: string | boolean;
   bestSeller?: string | boolean;
@@ -69,7 +68,7 @@ function parseVarieties(namesStr: string, pricesStr: string) {
 
   return names.map((name, index) => ({
     name,
-    price: prices[index] || prices[0] || 0,
+    price: prices[index] || prices[0],
   }));
 }
 
@@ -127,7 +126,7 @@ async function importProducts(filePath: string) {
         // Use parsed prices here
         price: prices.length === 1 ? prices[0] : Math.min(...prices), // Store lowest price if multiple
         varieties: parseVarieties(
-          row["varieties (names)"] || "",
+          row["varieties (array)"] || "",
           prices.join(",") // Convert number[] back to string
         ), // Pass parsed prices to varieties
 

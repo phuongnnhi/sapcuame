@@ -5,6 +5,7 @@ import { SearchPopover } from './search-popover'
 import { UserMenu } from './user-menu'
 // import { MobilePopover } from './mobile-popover'
 import { NavbarLinks } from './navbar-links'
+import Link from 'next/link'
 
 export const MenuBlock = () => {
   return (
@@ -15,6 +16,7 @@ export const MenuBlock = () => {
             {/* <MobilePopover>
               <NavbarLinks />
             </MobilePopover> */}
+            <Link href ="/">
             <Image
               src="/images/logo_chu.png" 
               alt="Logo"
@@ -22,6 +24,7 @@ export const MenuBlock = () => {
               width="200px" 
               objectFit="cover"
             />
+            </Link>
             <NavbarLinks hideBelow="md" />
           </HStack>
           <HStack gap={{ base: '2', md: '4' }}>

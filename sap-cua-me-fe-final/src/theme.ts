@@ -11,8 +11,10 @@ const system = createSystem(defaultConfig, {
           300: { value: "#F0F0F0" },
           500: { value: "#7C7495" },
           700: { value: "#9678B6" },
+          "pastel": {value: "#D9C4EC80"},
           '700Alpha80': {value: "#9678B6CC"},
-          '500Alpha80': {value: "#7C7495CC"}
+          '500Alpha80': {value: "#7C7495CC"},
+          '700Alpha50': {value: "#7C749580"}
         },
       },
       fonts: {

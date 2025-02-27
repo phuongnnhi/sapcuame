@@ -1,20 +1,8 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { PasswordInput } from "@/components/ui/password-input";
 import {
   Box,
-  Button,
-  Container,
-  Field,
-  Flex,
-  HStack,
-  Heading,
-  Input,
-  Link,
-  Separator,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { HeroSection } from "@/components/Homepage/HeroSection";
 import { StorySection } from "@/components/Homepage/StorySection";
@@ -30,12 +18,15 @@ export default function Page() {
     <Stack flex="1" gap="10">
           <MenuBlock/>
           <HeroSection />
-          <StorySection/>
-          <FeaturedProducts/>
+          <Box id="story-section">
+          <StorySection /></Box>
+          <Box id="me-goi-y">
+          <FeaturedProducts/></Box>
           <MarketRules/>
           <BestSellers/>
           <CategorySection/>
-          <Footer />
+          <Box id="lien-he">
+          <Footer /></Box>
         </Stack>
   );
 }

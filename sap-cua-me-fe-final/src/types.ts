@@ -1,3 +1,8 @@
+export interface Variety {
+    name: string;
+    price: number;
+  }
+  
 export interface Product {
     _id: string;
     name: string;
@@ -8,6 +13,8 @@ export interface Product {
     colors?: string[];
     category: string[];
     tags?: string[];
+    size:string[];
+    varieties:Variety[];
     price: number;
     isAvailable: boolean;
     isFeatured: boolean;

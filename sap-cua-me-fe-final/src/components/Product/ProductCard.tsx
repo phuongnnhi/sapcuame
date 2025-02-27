@@ -1,9 +1,10 @@
 "use clients";
-import { Button, Flex, AspectRatio, FormatNumber, Card, Span, Stack, Text } from '@chakra-ui/react'
+import { Button, Flex, AspectRatio, FormatNumber, Card, Span, Stack, Text} from '@chakra-ui/react'
 import type { Product } from '@/types'
 import { ProductColorPicker } from '@/components/Product/product-color-picker'
 import { useState } from 'react'
 import { BsCartCheckFill } from "react-icons/bs";
+import Link from 'next/link';
 
 interface ProductItemProps {
   data: Product
@@ -35,9 +36,11 @@ export const ProductItem = (props: ProductItemProps) => {
               {data.category}
             </Text>
             <ProductColorPicker data={data}/>
+            <Link href={`/san-pham/${data._id}`}>
             <Text textStyle="lg" color="brand.700" fontWeight="bold">
               {data.name}
             </Text>
+            </Link>
           </Stack>
         </Stack>
       </Card.Body>
