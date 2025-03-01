@@ -30,7 +30,3 @@ lerna-debug.log
 .tmp/
 .DS_Store
 Thumbs.db
-
-# Dependency lock files (if not needed in repo)
-package-lock.json
-yarn.lock
