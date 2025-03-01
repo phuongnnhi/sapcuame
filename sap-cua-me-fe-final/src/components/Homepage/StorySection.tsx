@@ -26,7 +26,8 @@ export const StorySection = () => {
         p={{ base: "6", md: "10" }}
         flex="1"
         color="brand.50"
-        minH="300px"
+        minH={{base: "auto", md:"300px"}}
+        textAlign={{ base: "center", md: "left" }}
         // marginLeft="20"
         // marginRight="20"
       >

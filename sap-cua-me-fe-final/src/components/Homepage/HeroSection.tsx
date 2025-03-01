@@ -5,7 +5,7 @@ export const HeroSection = () => {
     <Box
       px={{ base: 4, md: 8 }}
       py={{ base: 4, md: 8}}
-      height="100vh" 
+      height="full" 
       display="flex"
       justifyContent="center"
       alignItems="center"
