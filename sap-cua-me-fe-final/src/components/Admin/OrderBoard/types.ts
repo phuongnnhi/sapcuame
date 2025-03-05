@@ -1,10 +1,10 @@
-type User1 = {
-    _id: string;
-}
+// type User1 = {
+//     _id: string;
+// }
 
 export interface Order {
     _id: string;
-    userId: User1; 
+    userId: string 
     createdAt: string | Date;
     status: 'Mới tạo' | 'Chờ xác nhận' | 'Đã xác nhận' | 'Đang chuẩn bị hàng' | 'Đang giao hàng' | 'Đã giao hàng' | 'Đã hoàn thành' | 'Đã hủy' | 'Hoàn trả' | 'Đã hoàn tiền';
     totalCost: number;

@@ -1,4 +1,12 @@
-import { Box, Container, Flex, Text, VStack, Separator, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Text,
+  VStack,
+  Separator,
+  Heading,
+} from "@chakra-ui/react";
 
 const MarketRules = () => {
   return (
@@ -19,7 +27,7 @@ const MarketRules = () => {
         left={0}
         width="full"
         height="full"
-        bg="blackAlpha.600"
+        bg="brand.500Alpha50"
       />
 
       {/* Content */}
@@ -36,27 +44,34 @@ const MarketRules = () => {
             gap={6}
             align="flex-start"
             maxW={{ base: "full", md: "60%" }}
-            color="white"
+            color="brand.50"
           >
             <Text pl={4} fontSize="lg">
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea"
+              Mẹ không phải chuyên gia làm đẹp nên sẽ không tư vấn bạn theo kiến
+              thức chuyên môn hay thành phần. Thay vào đó, lời khuyên của mẹ sẽ
+              đến từ những món mà mẹ tự tin đưa cho chồng, con, người thân, hay
+              gia đình của mẹ sử dụng.
             </Text>
-            <Separator size="sm" width="100%" orientation="horizontal" borderColor="whiteAlpha.800" />
+            <Separator
+              size="sm"
+              width="100%"
+              orientation="horizontal"
+              borderColor="whiteAlpha.800"
+            />
             <Text pl={4} fontSize="lg">
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea"
+              Bạn thông cảm đừng trả giá vì mẹ bán không lời nhiều. Khách quen
+              mua riết là mẹ giảm giá à, bạn bè của con gái có khi mẹ còn lấy
+              giá vốn.
             </Text>
-            <Separator size="sm" width="100%" orientation="horizontal" borderColor="whiteAlpha.800" />
+            <Separator
+              size="sm"
+              width="100%"
+              orientation="horizontal"
+              borderColor="whiteAlpha.800"
+            />
             <Text pl={4} fontSize="lg">
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea"
+              Mẹ ship hàng theo phong cách "cận hiện đại". Nhắn Zalo/Facebook mẹ
+              để chốt đơn rồi mẹ gửi anh Grab ruột giao qua cho bạn nhen.
             </Text>
           </VStack>
 

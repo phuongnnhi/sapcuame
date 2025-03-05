@@ -22,6 +22,7 @@ const system = createSystem(defaultConfig, {
           "pastel": {value: "#D9C4EC80"},
           '700Alpha80': {value: "#9678B6CC"},
           '500Alpha80': {value: "#7C7495CC"},
+          '500Alpha50': {value: "#7C749580"},
           '700Alpha50': {value: "#7C749580"}
         },
       },

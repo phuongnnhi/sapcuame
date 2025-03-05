@@ -2,10 +2,10 @@
 import { Button, Flex, AspectRatio, FormatNumber, Card, Span, Stack, Text} from '@chakra-ui/react'
 import type { Product } from '@/types'
 import { ProductColorPicker } from '@/components/Product/product-color-picker'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsCartCheckFill } from "react-icons/bs";
 import Link from 'next/link';
-import { addToCart, removeCartItem } from '@/app/apiFunctions';
+import { addToCart, getCart, removeCartItem } from '@/app/apiFunctions';
 
 interface ProductItemProps {
   data: Product
@@ -19,12 +19,34 @@ export const ProductItem = (props: ProductItemProps) => {
   const [isLoading, setIsLoading] = useState(false); 
   const [cartItemId, setCartItemId] = useState<string | null>(null);
 
+  // Check if product is already in cart on mount
+  const updateCartState = async () => {
+    try {
+      const cart = await getCart();
+      if (cart && Array.isArray(cart.products)) {
+        const cartItem = cart.products.find((item) => item.productId._id === data._id);
+        if (cartItem) {
+          setCartItemId(cartItem._id);
+          setIsInCart(true);
+        } else {
+          setCartItemId(null);
+          setIsInCart(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching cart status:", error);
+    }
+  };
+
+  useEffect(() => {
+    updateCartState();
+  }, [data._id]);
+
   const handleAddToCart = async () => {
     try {
       setIsLoading(true);
       const response = await addToCart(data._id, 1); // Call API to add product to cart
-      setIsInCart(true);
-      setCartItemId(response._id); // Save the cart item ID for removal
+      await updateCartState();
     } catch (error) {
       console.error("Failed to add to cart:", error);
     } finally {
@@ -38,8 +60,7 @@ export const ProductItem = (props: ProductItemProps) => {
     try {
       setIsLoading(true);
       await removeCartItem(cartItemId); // Call API to remove product from cart
-      setIsInCart(false);
-      setCartItemId(null); // Reset cart item ID
+      await updateCartState()
     } catch (error) {
       console.error("Failed to remove from cart:", error);
     } finally {

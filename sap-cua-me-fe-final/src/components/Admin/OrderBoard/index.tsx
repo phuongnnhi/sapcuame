@@ -51,7 +51,7 @@ const OrderBoard: React.FC<Props> = ({ orders }) => {
           {orders.map((order) => (
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
-              <TableCell>{order.userId._id}</TableCell>
+              <TableCell>{order.userId}</TableCell>
               <TableCell>
                 {new Date(order.createdAt).toLocaleDateString()}
               </TableCell>

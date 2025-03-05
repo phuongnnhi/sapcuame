@@ -1,0 +1,24 @@
+{
+    "testEnvironment": "node",
+    "modulePaths": ["<rootDir>"],
+    "roots": ["<rootDir>/src"],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./coverage",
+    "coveragePathIgnorePatterns": ["node_modules"],
+    "modulePathIgnorePatterns": ["<rootDir>/dist"],
+    "testPathIgnorePatterns": ["<rootDir>/src/config"],
+    "preset": "ts-jest",
+    "testRegex": ".*\\.(test|e2e-test)\\.ts$",
+    "transform": {
+      "^.+\\.{ts|js}?$": [
+        "ts-jest",
+        {
+          "isolatedModules": true,
+          "diagnostics": false
+        }
+      ]
+    }
+  }

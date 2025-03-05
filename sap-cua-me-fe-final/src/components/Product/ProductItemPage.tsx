@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Product } from "@/types";
 
@@ -15,7 +16,13 @@ import {
   Breadcrumb,
   Separator,
 } from "@chakra-ui/react";
-import { getProductById, getProducts } from "@/app/apiFunctions";
+import {
+  addToCart,
+  getCart,
+  getProductById,
+  getProducts,
+  removeCartItem,
+} from "@/app/apiFunctions";
 import { ProductItem } from "./ProductCard";
 import { ProductColorPicker } from "./product-color-picker";
 // import { Divider } from "@mui/material";
@@ -23,6 +30,7 @@ import { LuHouse, LuShoppingBag, LuSmile } from "react-icons/lu";
 
 interface ItemPageProps {
   productId: string;
+  data: Product;
 }
 
 export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
@@ -36,6 +44,9 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
     Product["varieties"][0] | null
   >(null);
   const [currentPrice, setCurrentPrice] = useState<number | null>(null);
+  const [isInCart, setIsInCart] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [cartItemId, setCartItemId] = useState<string | null>(null);
 
   /** Fetch product data */
   useEffect(() => {
@@ -71,6 +82,35 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
     fetchData();
   }, [productId]);
 
+  useEffect(() => {
+    if (!product) return;
+  
+    const checkCartStatus = async () => {
+      try {
+        const cart = await getCart(); // Fetch cart data from API
+        console.log("Cart data:", cart);
+  
+        if (cart && Array.isArray(cart.products)) {
+          const productIds = cart.products.map((item) => item.productId._id);
+  
+          if (productIds.includes(product._id)) {
+            console.log("Product is in cart! Updating state.")
+            setCartItemId(product._id); // Now we assign the correct value
+            setIsInCart(true)
+          } else {
+            console.log(" Product is NOT in cart!");
+            setCartItemId(null);
+            setIsInCart(false);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch cart status:", error);
+      }
+    };
+  
+    checkCartStatus();
+  }, [product]); 
+  
   /** Set initial variety and price after product loads */
   useEffect(() => {
     if (product && product.varieties?.length > 0) {
@@ -86,6 +126,67 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
   if (loading) return <Text>Loading product...</Text>;
   if (error) return <Text>{error}</Text>;
   if (!product) return <Text>Product not found.</Text>;
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+  
+    try {
+      setIsLoading(true);
+      await addToCart(product._id, 1);
+      setCartItemId(product._id);
+    setIsInCart(true); 
+  
+      //  Re-fetch cart to update UI after adding
+      const updatedCart = await getCart();
+  
+      if (updatedCart && Array.isArray(updatedCart.products)) {
+        const productIds = updatedCart.products.map((item) => item.productId._id);
+  
+
+        if (!productIds.includes(product._id)) {
+          setCartItemId(null);
+          setIsInCart(false);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleRemoveFromCart = async () => {
+    if (!product) return;
+  
+    try {
+      setIsLoading(true);
+      const cart = await getCart();
+  
+      if (!cart || !Array.isArray(cart.products)) {
+        console.error("Cart is empty or invalid!");
+        return;
+      }
+  
+      const cartItem = cart.products.find(
+        (item) => item.productId._id === product._id
+      );
+  
+      if (!cartItem) {
+        console.error("Product not found in cart!");
+        return;
+      }
+  
+      console.log("Removing product from cart, cartItemId:", cartItem._id);
+      await removeCartItem(cartItem._id); 
+  
+      setCartItemId(null);
+      setIsInCart(false);
+    } catch (error) {
+      console.error("Failed to remove from cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Container maxW="7xl" py="10">
@@ -154,9 +255,7 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
               {product.name}
             </Heading>
             <Text fontSize="2xl" fontWeight="bold" color="brand.500Alpha80">
-              <Text fontSize="2xl" fontWeight="bold" color="brand.500Alpha80">
-                {currentPrice?.toLocaleString("de-DE")} VNĐ
-              </Text>
+              {currentPrice?.toLocaleString("de-DE")} VNĐ
             </Text>
             <Text>{product.description.split(".")[0]}.</Text>
 
@@ -237,13 +336,17 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
             )}
 
             <Separator size="sm" width="100%" orientation="horizontal" />
-            <Button bg="brand.700" size="lg">
-              Thêm vào giỏ hàng
+            <Button
+              bg={isInCart ? "gray.500" : "brand.700"}
+              size="lg"
+              onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
+            >
+              {isInCart ? "Xóa khỏi giỏ hàng" : "Thêm vào giỏ hàng"}
             </Button>
           </Stack>
         </Grid>
 
-        <Box mt="12" bg="brand.pastel" borderRadius="lg" p={10} boxShadow="md">
+        <Box mt="20" bg="brand.pastel" borderRadius="lg" p={10} boxShadow="md">
           <Heading size="2xl" mb={4} color="brand.500">
             Mô tả sản phẩm
           </Heading>

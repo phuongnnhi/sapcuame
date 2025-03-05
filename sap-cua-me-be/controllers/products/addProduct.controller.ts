@@ -11,7 +11,6 @@ export const addProduct = async (req: Request, res: Response) => {
 
         let uploadedImages: string[] = [];
 
-        // Ensure `req.files` is processed correctly
         const files = req.files as Express.Multer.File[] | undefined;
         if (files && Array.isArray(files)) {
             for (const file of files) {

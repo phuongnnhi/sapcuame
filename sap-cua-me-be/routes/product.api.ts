@@ -11,6 +11,7 @@ import { idSchema } from '../schemas/products/idSchema';
 import { createProductSchema } from '../schemas/products/createProduct.schema';
 import { updateProductSchema } from '../schemas/products/updateProduct.schema';
 import upload from '../middleware/uploadMiddleware'; 
+import { isAdmin } from '../middleware/role';
 
 const router = express.Router();
 
@@ -43,13 +44,13 @@ router.post('/', upload.array('images', 5), validateMiddleware(createProductSche
  * @description Update an existing product with new image uploads to Cloudinary
  * @access Admin
  */
-router.put('/:id', upload.array('images', 5), validateMiddleware(idSchema, 'params'), validateMiddleware(updateProductSchema, 'body'), updateProduct);
+router.put('/:id', isAdmin, upload.array('images', 5), validateMiddleware(idSchema, 'params'), validateMiddleware(updateProductSchema, 'body'), updateProduct);
 
 /**
  * @route DELETE api/admin/products/:id
  * @description Delete a product
  * @access Admin
  */
-router.delete('/:id', validateMiddleware(idSchema, 'params'), deleteProduct);
+router.delete('/:id', isAdmin, validateMiddleware(idSchema, 'params'), deleteProduct);
 
 export default router;
