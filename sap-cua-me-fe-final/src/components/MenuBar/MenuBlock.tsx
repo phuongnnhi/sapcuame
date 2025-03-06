@@ -35,6 +35,7 @@ export const MenuBlock = () => {
 
   return (
     <Box
+      data-testid="menu-block"
       position="sticky"
       top="5"
       zIndex="1000"
