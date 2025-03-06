@@ -47,6 +47,7 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
   const [isInCart, setIsInCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cartItemId, setCartItemId] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
 
   /** Fetch product data */
   useEffect(() => {
@@ -84,19 +85,19 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
 
   useEffect(() => {
     if (!product) return;
-  
+
     const checkCartStatus = async () => {
       try {
         const cart = await getCart(); // Fetch cart data from API
         console.log("Cart data:", cart);
-  
+
         if (cart && Array.isArray(cart.products)) {
           const productIds = cart.products.map((item) => item.productId._id);
-  
+
           if (productIds.includes(product._id)) {
-            console.log("Product is in cart! Updating state.")
+            console.log("Product is in cart! Updating state.");
             setCartItemId(product._id); // Now we assign the correct value
-            setIsInCart(true)
+            setIsInCart(true);
           } else {
             console.log(" Product is NOT in cart!");
             setCartItemId(null);
@@ -107,10 +108,10 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
         console.error("Failed to fetch cart status:", error);
       }
     };
-  
+
     checkCartStatus();
-  }, [product]); 
-  
+  }, [product]);
+
   /** Set initial variety and price after product loads */
   useEffect(() => {
     if (product && product.varieties?.length > 0) {
@@ -129,19 +130,20 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
 
   const handleAddToCart = async () => {
     if (!product) return;
-  
+
     try {
       setIsLoading(true);
-      await addToCart(product._id, 1);
+      await addToCart(product._id, quantity);
       setCartItemId(product._id);
-    setIsInCart(true); 
-  
+      setIsInCart(true);
+
       //  Re-fetch cart to update UI after adding
       const updatedCart = await getCart();
-  
+
       if (updatedCart && Array.isArray(updatedCart.products)) {
-        const productIds = updatedCart.products.map((item) => item.productId._id);
-  
+        const productIds = updatedCart.products.map(
+          (item) => item.productId._id
+        );
 
         if (!productIds.includes(product._id)) {
           setCartItemId(null);
@@ -154,31 +156,31 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
       setIsLoading(false);
     }
   };
-  
+
   const handleRemoveFromCart = async () => {
     if (!product) return;
-  
+
     try {
       setIsLoading(true);
       const cart = await getCart();
-  
+
       if (!cart || !Array.isArray(cart.products)) {
         console.error("Cart is empty or invalid!");
         return;
       }
-  
+
       const cartItem = cart.products.find(
         (item) => item.productId._id === product._id
       );
-  
+
       if (!cartItem) {
         console.error("Product not found in cart!");
         return;
       }
-  
+
       console.log("Removing product from cart, cartItemId:", cartItem._id);
-      await removeCartItem(cartItem._id); 
-  
+      await removeCartItem(cartItem._id);
+
       setCartItemId(null);
       setIsInCart(false);
     } catch (error) {
@@ -336,6 +338,20 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
             )}
 
             <Separator size="sm" width="100%" orientation="horizontal" />
+            <Stack direction="row" alignItems="center" gap={3}>
+              <Text fontWeight="bold" color = "brand.500">Số lượng:</Text>
+              <Button
+                size="sm"
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                bg ="brand.500"
+              >
+                -
+              </Button>
+              <Text>{quantity}</Text>
+              <Button size="sm" onClick={() => setQuantity((prev) => prev + 1)} bg ="brand.500">
+                +
+              </Button>
+            </Stack>
             <Button
               bg={isInCart ? "gray.500" : "brand.700"}
               size="lg"
