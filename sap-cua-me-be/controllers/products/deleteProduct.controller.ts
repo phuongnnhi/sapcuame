@@ -14,6 +14,8 @@ export const deleteProduct = async (req:Request, res:Response) => {
             return;
           }
 
+          // Delete all the ProductCart relate to this deleted Product
+
      res.status(200).json({ message: 'Product soft-deleted successfully', product: deletedProduct });
     } catch (error) {
         console.error(error);

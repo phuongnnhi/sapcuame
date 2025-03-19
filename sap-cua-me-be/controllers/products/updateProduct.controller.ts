@@ -35,6 +35,8 @@ export const updateProduct = async (req: Request, res: Response) => {
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
 
+    // When change isAvailable to false, remove all the ProductCart related to that products
+
     res.status(200).json(updatedProduct);
   } catch (error) {
     console.error(error);

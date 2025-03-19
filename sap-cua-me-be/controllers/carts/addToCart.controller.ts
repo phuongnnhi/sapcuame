@@ -17,22 +17,24 @@ export const addToCart = async (req:CustomRequest, res:Response) => {
         //find or create user's cart
         let cart = await Cart.findOne({ userId });
         if (!cart) {
-          cart = new Cart({ userId, products: [] });
-        }
+            cart = new Cart({ userId });
+            await cart.save(); 
+          }
     
-        // Check if the product already exists in the cart
-        let productCart = await ProductCart.findOne({ productId, cartId: cart._id });
-    
-        if (productCart) {
-            //update quantity if product exists
-            productCart.quantity += quantity;
-            await productCart.save();
-        } else {
-            //Add new product to cart
-            productCart = new ProductCart({productId, cartId:cart._id, quantity});
-            await productCart.save();
-            cart.products.push(productCart._id)
-        }
+         // Check if the product already exists in the cart
+         let productCart = await ProductCart.findOne({ productId, cartId: cart._id });
+
+         if (!productCart) {
+             // Always create a new ProductCart entry if missing
+             productCart = new ProductCart({ productId, cartId: cart._id, quantity });
+             await productCart.save();
+            //  cart.products.push(productCart._id);
+             await cart.save();
+         } else {
+             // Update quantity if product already exists
+             productCart.quantity += quantity;
+             await productCart.save();
+         }
 
         await cart.save();
         res.status(200).json({message:"Product added to cart", cart})

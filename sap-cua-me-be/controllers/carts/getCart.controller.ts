@@ -8,7 +8,7 @@ export const getCart = async(req: CustomRequest, res:Response) => {
 
         //find the user's cart and populate the products
         const cart = await Cart.findOne({userId}).populate({
-            path: "products",
+            path: "productCarts",
             populate: {
               path: "productId",
               model: "Product",

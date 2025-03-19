@@ -9,7 +9,6 @@ export const isAdmin = (req: CustomRequest, res: Response, next: NextFunction) =
       res.status(401).json({ message: 'Unauthorized: No user information available' });
       return;
     }
-    req.user
 
     // Check if the user's role is "admin"
     if (req.user.role !== 'admin') {

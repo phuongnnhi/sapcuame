@@ -9,7 +9,7 @@ export interface IProductOrder extends Document {
 const ProductOrderSchema: Schema = new Schema(
   {
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-    orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
+    orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: false },
     quantity: { type: Number, required: true },
   },
   { timestamps: true }
