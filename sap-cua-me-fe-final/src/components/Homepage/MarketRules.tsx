@@ -34,10 +34,10 @@ const MarketRules = () => {
       <Container maxW="7xl" height="full" position="relative">
         <Flex
           direction={{ base: "column", md: "row" }}
-          justify="space-between"
+          justify="space-around"
           align="center"
           height="full"
-          py={{ base: 10, md: 0 }}
+          py={{ base: 4, md: 0 }}
         >
           {/* Left Section - Text Blocks */}
           <VStack
