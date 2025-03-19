@@ -23,8 +23,11 @@ export const ProductItem = (props: ProductItemProps) => {
   const updateCartState = async () => {
     try {
       const cart = await getCart();
-      if (cart && Array.isArray(cart.products)) {
-        const cartItem = cart.products.find((item) => item.productId._id === data._id);
+      if (cart && Array.isArray(cart.productCarts)) {
+        const cartItem = cart.productCarts.find((item) => {
+          return item.productId && item.productId._id === data._id;
+        });
+  
         if (cartItem) {
           setCartItemId(cartItem._id);
           setIsInCart(true);
@@ -70,7 +73,7 @@ export const ProductItem = (props: ProductItemProps) => {
 
 
   return (
-    <Card.Root overflow="hidden" variant="elevated" boxShadow="lg" bg="brand.300" height="600px">
+    <Card.Root overflow="hidden" variant="elevated" boxShadow="lg" bg="brand.300" minHeight="600px" minWidth="300px" width="100%">
       <Card.Header p="0">
       <AspectRatio ratio={4 / 5} w="full">
     <img

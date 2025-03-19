@@ -47,27 +47,39 @@ export interface Cart {
     updatedAt: Date;
 }
 
-// export interface Order {
-//     _id: string;
-//     userId: string;
-//     createdAt: string | Date;  // Allow both Date and string
-//     status: 
-//         | 'Mới tạo'
-//         | 'Chờ xác nhận'
-//         | 'Đã xác nhận'
-//         | 'Đang chuẩn bị hàng'
-//         | 'Đang giao hàng'
-//         | 'Đã giao hàng'
-//         | 'Đã hoàn thành'
-//         | 'Đã hủy'
-//         | 'Hoàn trả'
-//         | 'Đã hoàn tiền';
-//     totalCost: number;
-// }
+export interface ProductOrder {
+    _id: string;
+    orderId: string; // eferences the Order ID
+    productId: Product; // References the full Product details
+    quantity: number;
+}
 
-// export interface OrderResponse {
-//     ordersWithProducts: Order[];
-//     page: number;
-//     limit: number;
-//     total: number;
-// }
+export interface Order {
+    _id: string;
+    userId: string;
+    totalCost: number;
+    status:
+      | "Mới tạo"
+      | "Chờ xác nhận"
+      | "Đã xác nhận"
+      | "Đang chuẩn bị hàng"
+      | "Đang giao hàng"
+      | "Đã giao hàng"
+      | "Đã hoàn thành"
+      | "Đã hủy"
+      | "Hoàn trả"
+      | "Đã hoàn tiền";
+    productOrders?: ProductOrder[];
+    createdAt: string;
+}
+
+export interface OrderResponse {
+    orders: Order[];
+    totalOrders: number;  
+    totalPages: number;  
+    currentPage: number;  
+}
+
+export interface ProductOrderResponse {
+    productOrders: ProductOrder[];
+}

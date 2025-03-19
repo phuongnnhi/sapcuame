@@ -1,7 +1,8 @@
 import { Box, Grid, Text, Heading, Container } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 const categories = [
-  { name: "Chăm sóc mặt", image: "/images/category.jpg" },
+  { name: "Trang điểm", image: "/images/category.jpg" },
   { name: "Chăm sóc da", image: "/images/category1.jpg" },
   { name: "Chăm sóc cơ thể", image: "/images/category2.jpg" },
   { name: "Chăm sóc tóc", image: "/images/category3.jpg" },
@@ -9,6 +10,8 @@ const categories = [
 ];
 
 const CategorySection = () => {
+  const router = useRouter();
+
   return (
     <Box
       backgroundImage="url('/images/chobackground.png')" 
@@ -33,17 +36,29 @@ const CategorySection = () => {
             {/* Row 1 - 1:2 Ratio */}
             <Box
               gridColumn="span 1" // Takes 1 column
+              onClick={() =>
+                  router.push(`/san-pham?category=${encodeURIComponent(categories[0].name.toLowerCase())}`)
+                }
               {...categoryStyle(categories[0])}
             />
             <Box
               gridColumn="span 2" // Takes 2 columns
+              onClick={() =>
+                  router.push(`/san-pham?category=${encodeURIComponent(categories[1].name.toLowerCase())}`)
+                }
               {...categoryStyle(categories[1])}
             />
 
             {/* Row 2 - 3 Equal Columns */}
-            <Box {...categoryStyle(categories[2])} />
-            <Box {...categoryStyle(categories[3])} />
-            <Box {...categoryStyle(categories[4])} />
+            <Box onClick={() =>
+                  router.push(`/san-pham?category=${encodeURIComponent(categories[2].name.toLowerCase())}`)
+                } {...categoryStyle(categories[2])} />
+            <Box onClick={() =>
+                  router.push(`/san-pham?category=${encodeURIComponent(categories[3].name.toLowerCase())}`)
+                } {...categoryStyle(categories[3])} />
+            <Box onClick={() =>
+                  router.push(`/san-pham?category=${encodeURIComponent(categories[4].name.toLowerCase())}`)
+                } {...categoryStyle(categories[4])} />
           </Grid>
         </Container>
       </Box>
@@ -81,7 +96,7 @@ const categoryStyle = (category: { name: string; image: string }) => ({
           top="20px"
           left="20px"
           color="white"
-          fontSize="2xl"
+          fontSize={{base: "md", md: "2xl"}}
           fontWeight="bold"
           textAlign="left"
           zIndex="1" // Ensures text appears above the background

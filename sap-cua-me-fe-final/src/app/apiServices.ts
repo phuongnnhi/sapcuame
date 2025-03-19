@@ -37,7 +37,7 @@ const refreshToken = async () => {
 const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
-    window.location.href = "/login"; // Redirect to login page
+    window.location.href = "/dang-nhap"; // Redirect to login page
 };
 
 // Request Interceptor: Attach token to all requests

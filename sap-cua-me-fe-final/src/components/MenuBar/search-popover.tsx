@@ -1,11 +1,39 @@
-import { IconButton, type IconButtonProps } from '@chakra-ui/react'
-import { LuSearch } from 'react-icons/lu'
+import {
+  IconButton,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  Input,
+  Icon,
+  Popover
+} from "@chakra-ui/react";
+import { LuSearch } from "react-icons/lu";
+import { SearchField } from "./search-field";
 
-// TODO: Render a search popover
-export const SearchPopover = (props: IconButtonProps) => {
-  return (
-    <IconButton variant="ghost" rounded="full" colorPalette="gray" {...props}>
-      <LuSearch />
-    </IconButton>
-  )
+interface SearchPopoverProps {
+  onSearchChange?: (value: string) => void;
 }
+
+export const SearchPopover = ({ onSearchChange, ...props }: SearchPopoverProps) => {
+  return (
+    <Popover.Root>
+      <PopoverTrigger>
+        <IconButton
+          variant="plain"
+          color="brand.50"
+          rounded="full"
+          colorScheme="gray"
+          aria-label="Search"
+          {...props}
+        >
+          <LuSearch />
+        </IconButton>
+      </PopoverTrigger>
+      <PopoverContent maxW="200px" p={0}>
+        <PopoverBody p={0}>
+          <SearchField onSearchChange={onSearchChange} />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover.Root>
+  );
+};

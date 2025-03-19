@@ -1,6 +1,29 @@
-import { Order, OrderResponse } from "@/components/Admin/OrderBoard/types";
 import apiService from "./apiServices";
-import { Cart, Product, ProductResponse } from "@/types";
+import { Cart, Product, ProductOrder, ProductOrderResponse, ProductResponse, Order, OrderResponse } from "@/types";
+
+export const checkoutOrder = async (cart: Cart): Promise<void> => {
+  try {
+    if (!cart.productCarts || cart.productCarts.length === 0) {
+      throw new Error("Cart is empty, cannot checkout.");
+    }
+
+    const products = cart.productCarts.map((productCart) => ({
+      productId: productCart.productId._id, 
+      quantity: productCart.quantity, 
+    }));
+
+    const response = await apiService.post("/order", { products });
+
+    if (response.status !== 201) { 
+      throw new Error("Thanh toán thất bại.");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error during checkout:", error);
+    throw error;
+  }
+};
 
 // Get all orders
 export const getAllOrders = async (): Promise<OrderResponse> => {
@@ -144,7 +167,7 @@ export const addToCart = async (productId: string, quantity: number): Promise<Ca
 // Get user cart
 export const getCart = async (): Promise<Cart> => {
   try {
-    const response = await apiService.get<Cart>("/cart");
+    const response = await apiService.get<Cart>("/cart"); 
     return response.data;
   } catch (error) {
     console.error("Error fetching cart:", error);
@@ -169,6 +192,41 @@ export const updateCartItem = async (cartItemId: string, quantity: number): Prom
     return response.data;
   } catch (error) {
     console.error("Error updating cart item:", error);
+    throw error;
+  }
+};
+
+//ORDER
+// Fetch orders of the logged-in user
+// Fetch paginated orders of the logged-in user
+export const getUserOrders = async (page: number = 1, limit: number = 10): Promise<OrderResponse> => {
+  try {
+    const response = await apiService.get<OrderResponse>(`/order?page=${page}&limit=${limit}`);
+    console.log("API Response:", response.data);
+
+    if (!Array.isArray(response.data.orders)) {
+      throw new Error("API did not return an array inside `orders`");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    throw error;
+  }
+};
+
+//Cancel order
+export const cancelOrder = async (orderId: string): Promise<void> => {
+  try {
+    const response = await apiService.put(`/order/${orderId}/cancel`);
+
+    if (response.status !== 200) {
+      throw new Error("Hủy đơn hàng thất bại.");
+    }
+    
+    console.log("Order canceled successfully");
+  } catch (error) {
+    console.error(`Error canceling order ${orderId}:`, error);
     throw error;
   }
 };

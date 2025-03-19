@@ -22,6 +22,7 @@ import {
   getProductById,
   getProducts,
   removeCartItem,
+  updateCartItem,
 } from "@/app/apiFunctions";
 import { ProductItem } from "./ProductCard";
 import { ProductColorPicker } from "./product-color-picker";
@@ -83,32 +84,34 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
     fetchData();
   }, [productId]);
 
+  const checkCartStatus = async () => {
+    if (!product) return;
+  
+    try {
+      console.log("🔄 Fetching fresh cart data...");
+      const cart = await getCart();
+  
+      if (cart && Array.isArray(cart.productCarts)) {
+        const cartItem = cart.productCarts.find((item) => item.productId._id === product._id);
+  
+        if (cartItem) {
+          console.log("✅Product is in cart, updating state.");
+          setCartItemId(cartItem._id);
+          setIsInCart(true);
+        } else {
+          console.log(" Product is NOT in cart.");
+          setCartItemId(null);
+          setIsInCart(false);
+        }
+      }
+    } catch (error) {
+      console.error(" Failed to fetch cart status:", error);
+    }
+  };
+  
+  /** Run checkCartStatus when the product loads */
   useEffect(() => {
     if (!product) return;
-
-    const checkCartStatus = async () => {
-      try {
-        const cart = await getCart(); // Fetch cart data from API
-        console.log("Cart data:", cart);
-
-        if (cart && Array.isArray(cart.products)) {
-          const productIds = cart.products.map((item) => item.productId._id);
-
-          if (productIds.includes(product._id)) {
-            console.log("Product is in cart! Updating state.");
-            setCartItemId(product._id); // Now we assign the correct value
-            setIsInCart(true);
-          } else {
-            console.log(" Product is NOT in cart!");
-            setCartItemId(null);
-            setIsInCart(false);
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch cart status:", error);
-      }
-    };
-
     checkCartStatus();
   }, [product]);
 
@@ -130,28 +133,23 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
 
   const handleAddToCart = async () => {
     if (!product) return;
-
+  
     try {
       setIsLoading(true);
+      console.log("🛒 Adding product to cart:", { productId: product._id, quantity });
+  
       await addToCart(product._id, quantity);
-      setCartItemId(product._id);
+  
+      //  Immediately update UI state to show the item in the cart
       setIsInCart(true);
-
-      //  Re-fetch cart to update UI after adding
-      const updatedCart = await getCart();
-
-      if (updatedCart && Array.isArray(updatedCart.products)) {
-        const productIds = updatedCart.products.map(
-          (item) => item.productId._id
-        );
-
-        if (!productIds.includes(product._id)) {
-          setCartItemId(null);
-          setIsInCart(false);
-        }
-      }
+      setCartItemId(product._id);
+  
+      // Wait before checking the cart to prevent fetching stale data
+      setTimeout(async () => {
+        await checkCartStatus();
+      }, 500);
     } catch (error) {
-      console.error("Failed to add to cart:", error);
+      console.error(" Failed to add to cart:", error);
     } finally {
       setIsLoading(false);
     }
@@ -164,12 +162,12 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
       setIsLoading(true);
       const cart = await getCart();
 
-      if (!cart || !Array.isArray(cart.products)) {
+      if (!cart || !Array.isArray(cart.productCarts)) {
         console.error("Cart is empty or invalid!");
         return;
       }
 
-      const cartItem = cart.products.find(
+      const cartItem = cart.productCarts.find(
         (item) => item.productId._id === product._id
       );
 

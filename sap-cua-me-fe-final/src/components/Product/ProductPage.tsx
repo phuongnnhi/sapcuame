@@ -12,9 +12,9 @@ import {
   HStack,
   Container,
   Heading,
-  Breadcrumb
+  Breadcrumb,
 } from "@chakra-ui/react";
-
+import { useSearchParams } from "next/navigation";
 import {
   PaginationRoot,
   PaginationItems,
@@ -30,8 +30,11 @@ import { LuHouse, LuShoppingBag } from "react-icons/lu";
 
 export const ProductPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const searchParams = useSearchParams();
+  const initialSearchTerm = searchParams?.get("search") || "";
+  const initialCategory = searchParams?.get("category") || "";
+  const [searchTerm, setSearchTerm] = useState<string>(initialSearchTerm); 
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const limit = 9;
@@ -42,7 +45,7 @@ export const ProductPage: React.FC = () => {
     try {
       const params = {
         search: searchTerm,
-        category: selectedCategory || undefined,
+        category: selectedCategory || "",
         page,
         limit,
       };
@@ -63,46 +66,52 @@ export const ProductPage: React.FC = () => {
 
   return (
     <Container maxW="7xl" py="10">
+      <Breadcrumb.Root marginBottom="10">
+        <Breadcrumb.List textStyle="md">
+          <Breadcrumb.Item gap="2">
+            <LuHouse />
+            <Breadcrumb.Link href="#">Trang chủ</Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator />
+          <Breadcrumb.Item gap="2">
+            <LuShoppingBag />
+            <Breadcrumb.Link href="#">Sản phẩm</Breadcrumb.Link>
+          </Breadcrumb.Item>
+        </Breadcrumb.List>
+      </Breadcrumb.Root>
 
-    <Breadcrumb.Root marginBottom="10">
-      <Breadcrumb.List textStyle="md">
-        <Breadcrumb.Item gap="2">
-        <LuHouse/> 
-          <Breadcrumb.Link href="#">Trang chủ</Breadcrumb.Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Separator />
-        <Breadcrumb.Item gap="2">
-        <LuShoppingBag/> 
-          <Breadcrumb.Link href="#">Sản phẩm</Breadcrumb.Link>
-        </Breadcrumb.Item>
-      </Breadcrumb.List>
-    </Breadcrumb.Root>
-
-      <Flex>
+      <Flex direction={{ base: "column", md: "row" }} gap={4}>
         <Box
-          w="20%"
+          w={{ base: "100%", md: "20%" }}
           p={4}
           bgColor="#e5ddf3"
-          height="500px"
+          maxHeight="500px"
+          height="auto"
           borderRight="1px solid #e2e8f0"
+          borderBottom={{ base: "1px solid #e2e8f0", md: "none" }}
           borderRadius="15px"
-          position="sticky"
-          top="20vh"
+          position={{ base: "relative", md: "sticky" }}
         >
           <Flex
-            paddingTop="30px"
-            direction="column"
+            paddingTop="10px"
+            direction={"column"}
             justify="top"
             align="center"
             height="100%"
           >
-            <Heading fontWeight="bold" textStyle="2xl" mb={4} color="brand.700">
+            <Heading fontWeight="bold" textStyle="2xl" mb={2} color="brand.700" textAlign="left">
               Quầy hàng
             </Heading>
-            <Stack gap={1}>
+            <Stack
+              direction={{ base: "row", md: "column" }}
+              gap={1}
+              align="flex-start"
+              wrap="wrap"
+            >
               {categories.map((cat) => (
                 <Button
                   key={cat}
+                  p={1}
                   bg={selectedCategory === cat ? "brand.500" : "transparent"}
                   color={selectedCategory === cat ? "brand.50" : "brand.500"}
                   _hover={{
@@ -115,6 +124,8 @@ export const ProductPage: React.FC = () => {
                   onClick={() =>
                     setSelectedCategory(cat === "toàn bộ sản phẩm" ? "" : cat)
                   }
+                  fontSize="sm"
+                  whiteSpace="nowrap"
                 >
                   {cat}
                 </Button>
@@ -123,13 +134,13 @@ export const ProductPage: React.FC = () => {
           </Flex>
         </Box>
 
-        <Box w="80%" p={4}>
+        <Box w="100%" p={4}>
           <Flex mb={4} justify="space-between" align="center">
             <Input
               placeholder="Nhập tên sản phẩm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              w="40%"
+              w="100%"
             />
           </Flex>
 
@@ -138,7 +149,7 @@ export const ProductPage: React.FC = () => {
               <Spinner size="xl" />
             </Flex>
           ) : (
-            <SimpleGrid columns={[1, 2, 3]} gap={4}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
               {products.map((product) => (
                 <ProductItem key={product._id} data={product} />
               ))}

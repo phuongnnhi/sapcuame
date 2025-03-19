@@ -57,7 +57,7 @@ export const BestSellers = () => {
       <Heading fontSize={{ base: "2xl", md: "3xl" }} color="brand.500" mb="6">
         Sản phẩm bán chạy ở sạp
       </Heading>
-      <SimpleGrid columns={{ base: 2, md: 4 }} gap="4">
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap="4">
         {products.slice(0, 4).map((product) => (
           <ProductItem key={product._id} data={product} />
         ))}

@@ -3,7 +3,6 @@ import {
   AspectRatio,
   Container,
   HStack,
-  Icon,
   Link,
   Stack,
   Text,
@@ -22,7 +21,7 @@ export const Footer = () => (
   >
     <Container maxW="7xl" py="10" mt="10">
     <Stack gap="6" px={{ base: "4", md: "8", lg: "16" }}>
-      <Stack direction="row" justify="space-between" align="center">
+      <Stack direction={{base: "column", md: "row"}} justify="space-between" align="center">
         <Stack> 
         <Flex
         direction={{ base: "column"}}

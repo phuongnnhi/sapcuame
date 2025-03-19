@@ -8,10 +8,11 @@ import {
 } from "@/components/ui/menu";
 import { Avatar, Button, Icon } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCircleHelp, LuLogOut, LuSettings, LuUser } from "react-icons/lu";
+import { LuCircleHelp, LuLogOut, LuPackage, LuSettings, LuUser } from "react-icons/lu";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "@/app/authApi";
+import Link from "next/link";
 
 export const UserMenu = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,18 +49,16 @@ export const UserMenu = () => {
             </Icon>
           </MenuTrigger>
           <MenuContent>
-            {/* <MenuItem value="profile">
-              <LuUser />
-              Profile
+          <Link href="/don-hang">
+            <MenuItem value="don-hang">
+              <LuPackage />
+              Đơn hàng
             </MenuItem>
-            <MenuItem value="settings">
-              <LuSettings />
-              Settings
-            </MenuItem>
-            <MenuSeparator /> */}
+            </Link>
+            <MenuSeparator />
             <MenuItem value="logout" onClick={handleLogout}>
               <LuLogOut />
-              Logout
+              Đăng xuất
             </MenuItem>
           </MenuContent>
         </MenuRoot>

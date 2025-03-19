@@ -25,7 +25,8 @@ const vietnameseColorMap: Record<string, string> = {
     "hồng nhạt": "#ffccff",
     "tím": "purple",
     "đỏ": "red",
-    "xanh da trời": "blue"
+    "xanh da trời": "blue",
+    "32": "blue"
 }
 
 function mapVietnameseColor(color: string): string {
