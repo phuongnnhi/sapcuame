@@ -125,9 +125,6 @@ export const logoutUser = async (req: CustomRequest, res: Response) => {
        return
     }
 
-    // Remove refresh token from the database (if stored)
-    await refreshToken.findOneAndDelete({ token: refreshToken });
-
     res.status(200).json({ message: "Logout success" });
   } catch (error) {
     console.error(error);
