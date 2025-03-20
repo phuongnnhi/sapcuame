@@ -41,7 +41,7 @@ export interface ProductCart {
 export interface Cart {
     _id: string;
     userId: string;
-    products: ProductCart[];
+    productCarts: ProductCart[];
     addedAt: Date;
     createdAt: Date;
     updatedAt: Date;
