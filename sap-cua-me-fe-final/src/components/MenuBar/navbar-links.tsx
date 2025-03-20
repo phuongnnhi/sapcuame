@@ -10,6 +10,13 @@ export const NavbarLinks = (props: StackProps) => {
           _hover={{
             _hover: { color: 'colorPalette.fg', textDecoration: 'none' },
           }}
+          _focus={{
+            outline: "none", 
+            textDecoration: "underline", 
+          }}
+          _active={{
+            textDecoration: "underline", 
+          }}
           _currentPage={{ color: 'colorPalette.fg' }}
         >
           Chuyện chợ
@@ -20,6 +27,13 @@ export const NavbarLinks = (props: StackProps) => {
           href="/#me-goi-y"
           _hover={{
             _hover: { color: 'colorPalette.fg', textDecoration: 'none' },
+          }}
+          _focus={{
+            outline: "none", 
+            textDecoration: "underline", 
+          }}
+          _active={{
+            textDecoration: "underline", 
           }}
           _currentPage={{ color: 'colorPalette.fg' }}
         >
@@ -32,6 +46,13 @@ export const NavbarLinks = (props: StackProps) => {
           _hover={{
             _hover: { color: 'colorPalette.fg', textDecoration: 'none' },
           }}
+          _focus={{
+            outline: "none", 
+            textDecoration: "underline", 
+          }}
+          _active={{
+            textDecoration: "underline", 
+          }}
           _currentPage={{ color: 'colorPalette.fg' }}
         >
           Sản phẩm
@@ -42,6 +63,13 @@ export const NavbarLinks = (props: StackProps) => {
           href="/#lien-he"
           _hover={{
             _hover: { color: 'colorPalette.fg', textDecoration: 'none' },
+          }}
+          _focus={{
+            outline: "none", 
+            textDecoration: "underline", 
+          }}
+          _active={{
+            textDecoration: "underline", 
           }}
           _currentPage={{ color: 'colorPalette.fg' }}
         >

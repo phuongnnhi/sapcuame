@@ -46,7 +46,7 @@ const MarketRules = () => {
             maxW={{ base: "full", md: "60%" }}
             color="brand.50"
           >
-            <Text pl={4} fontSize="lg">
+            <Text pl={4} fontSize={{ base: "md", md: "lg" }}>
               Mẹ không phải chuyên gia làm đẹp nên sẽ không tư vấn bạn theo kiến
               thức chuyên môn hay thành phần. Thay vào đó, lời khuyên của mẹ sẽ
               đến từ những món mà mẹ tự tin đưa cho chồng, con, người thân, hay
@@ -58,7 +58,7 @@ const MarketRules = () => {
               orientation="horizontal"
               borderColor="whiteAlpha.800"
             />
-            <Text pl={4} fontSize="lg">
+            <Text pl={4} fontSize={{ base: "md", md: "lg" }}>
               Bạn thông cảm đừng trả giá vì mẹ bán không lời nhiều. Khách quen
               mua riết là mẹ giảm giá à, bạn bè của con gái có khi mẹ còn lấy
               giá vốn.
@@ -69,7 +69,7 @@ const MarketRules = () => {
               orientation="horizontal"
               borderColor="whiteAlpha.800"
             />
-            <Text pl={4} fontSize="lg">
+            <Text pl={4} fontSize={{ base: "md", md: "lg" }}>
               Mẹ ship hàng theo phong cách &lsquo;cận hiện đại&rsquo;. Nhắn Zalo/Facebook mẹ
               để chốt đơn rồi mẹ gửi anh Grab ruột giao qua cho bạn nhen.
             </Text>

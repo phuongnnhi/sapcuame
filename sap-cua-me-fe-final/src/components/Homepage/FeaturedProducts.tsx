@@ -4,6 +4,7 @@ import { ProductItem } from "../Product/ProductCard";
 import { getFeaturedProducts } from "@/app/apiFunctions";
 import type { Product } from "@/types";
 
+
 import Slider from "react-slick";
 
 
@@ -46,12 +47,12 @@ export const FeaturedProducts = () => {
   }
 
   const settings = {
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
     swipeToSlide: true,
+    arrows: true, 
     responsive: [
       {
         breakpoint: 1024,
@@ -77,7 +78,7 @@ export const FeaturedProducts = () => {
 
   return (
 
-    <Container maxW="7xl" py="10" mt="20">
+    <Container maxW="7xl" py="10" mt="10">
             <Heading fontSize={{ base: "2xl", md: "3xl" }} color="brand.500" mb="6">Sản phẩm nhà mẹ dùng</Heading>
     <Slider {...settings}>
         {products.map((product) => (

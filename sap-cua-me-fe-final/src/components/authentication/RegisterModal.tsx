@@ -159,7 +159,7 @@ export const RegisterModal = () => {
 
         <Text textStyle="sm" color="brand.500" textAlign="center">
           Đã có tài khoản?{" "}
-          <Link variant="underline" href="#">
+          <Link variant="underline" href="/dang-nhap">
             Đăng nhập
           </Link>
         </Text>

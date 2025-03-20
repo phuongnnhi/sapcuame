@@ -37,15 +37,21 @@ export const StorySection = () => {
             <Text fontSize={{ base: "md", md: "lg" }}>
               Cái sạp chợ là tài sản gia truyền từ bà ngoại để lại cho mẹ. Cái
               sạp của bà ngoại nuôi mẹ lớn lên, rồi đến cái sạp của mẹ nuôi hai
-              anh em mình lớn lên.<br /><br />Hồi lúc mới mở cửa giao thương mẹ bán đắt dữ
-              lắm. Mẹ kể nhà hàng năm sao nào ở Sài Gòn mẹ cũng đã từng ăn, nhà
-              mình cũng là nhà đầu tiên trong xóm có tivi. Sau này mọi người ít
-              đến chợ truyền thống hơn, hàng bán chậm hơn, nhưng mà mẹ không bỏ
-              chợ được. <br /><br />Mẹ có những khách quen, có những bác ở nước ngoài nhưng
-              cũng chỉ mua đồ của mẹ, mẹ tìm thấy niềm vui trong việc nói chuyện
-              với mọi người và gợi ý những sản phẩm mà người nhà mẹ đang dùng.
-              <br /><br />
-              30 năm qua, chợ là một phần của mẹ, và không có gì có thể thay đổi điều đó. 
+              anh em mình lớn lên.
+              <br />
+              <br />
+              Hồi lúc mới mở cửa giao thương mẹ bán đắt dữ lắm. Mẹ kể nhà hàng
+              năm sao nào ở Sài Gòn mẹ cũng đã từng ăn, nhà mình cũng là nhà đầu
+              tiên trong xóm có tivi. Sau này mọi người ít đến chợ truyền thống
+              hơn, hàng bán chậm hơn, nhưng mà mẹ không bỏ chợ được. <br />
+              <br />
+              Mẹ có những khách quen, có những bác ở nước ngoài nhưng cũng chỉ
+              mua đồ của mẹ, mẹ tìm thấy niềm vui trong việc nói chuyện với mọi
+              người và gợi ý những sản phẩm mà người nhà mẹ đang dùng.
+              <br />
+              <br />
+              30 năm qua, chợ là một phần của mẹ, và không có gì có thể thay đổi
+              điều đó.
             </Text>
           </Box>
 
@@ -53,7 +59,11 @@ export const StorySection = () => {
           <Box
             flex="1"
             position="relative"
-            height={{ base: "300px", md: "500px" }}
+            height={{ base: "auto", md: "500px" }}
+            display="flex"
+            flexDirection={{ base: "column", md: "unset" }}
+            alignItems="center"
+            gap={{ base: "2", md: "0" }}
           >
             {[
               "/images/story2.png",
@@ -62,10 +72,10 @@ export const StorySection = () => {
             ].map((src, index) => (
               <MotionBox
                 key={src}
-                position="absolute"
-                top={{ base: `${index * 5}%`, md: `${index * 10}%` }}
-                left={{ base: `${index * 3}%`, md: `${index * 10}%` }}
-                width={{ base: "80%", md: "70%" }}
+                position={{ base: "static", md: "absolute" }}
+                top={{ md: `${index * 10}%` }}
+                left={{ md: `${index * 10}%` }}
+                width={{ base: "100%", md: "70%" }}
                 height="auto" // Maintain aspect ratio
                 whileHover={{ scale: 1.05 }}
                 initial={{ opacity: 0, y: 50 }}

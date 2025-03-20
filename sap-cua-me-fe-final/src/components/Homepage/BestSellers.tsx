@@ -53,7 +53,7 @@ export const BestSellers = () => {
   }
 
   return (
-    <Container maxW="7xl" py="10" mt="20">
+    <Container maxW="7xl" py="10" mt="10">
       <Heading fontSize={{ base: "2xl", md: "3xl" }} color="brand.500" mb="6">
         Sản phẩm bán chạy ở sạp
       </Heading>

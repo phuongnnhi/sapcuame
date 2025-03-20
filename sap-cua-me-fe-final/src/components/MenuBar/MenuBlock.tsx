@@ -17,21 +17,21 @@ export const MenuBlock = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Fetch products when search term changes
-  const fetchProducts = useCallback(async (search: string) => {
-    try {
-      await getProducts({ search });
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  }, []);
+// Fetch products when search term changes
+const fetchProducts = useCallback(async (search: string) => {
+  try {
+    await getProducts({ search });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+}, []);
 
-  // Call fetchProducts when searchTerm changes
-  useEffect(() => {
-    if (searchTerm.trim().length > 0) {
-      fetchProducts(searchTerm);
-    }
-  }, [searchTerm, fetchProducts]);
+// Call fetchProducts when searchTerm changes
+useEffect(() => {
+  if (searchTerm.trim().length > 0) {
+    fetchProducts(searchTerm);
+  }
+}, [searchTerm, fetchProducts]);
 
   useEffect(() => {
     const threshold = 10; // change this value to adjust sensitivity
@@ -62,7 +62,7 @@ export const MenuBlock = () => {
       zIndex="1000"
       bg="brand.700Alpha80"
       backdropFilter="blur(10px)"
-      mx={{ base: "8", md: "16" }}
+      mx={{ base: "0", md: "16" }}
       mt="10"
       py="0.7"
       px={{ base: "4", md: "8" }}

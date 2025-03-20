@@ -87,7 +87,8 @@ export const ProductItem = (props: ProductItemProps) => {
       boxShadow="lg"
       bg="brand.300"
       minHeight="600px"
-      minWidth="300px"
+      minWidth="280px"
+      height="100%"
       width="100%"
     >
       <Card.Header p="0">
@@ -99,7 +100,7 @@ export const ProductItem = (props: ProductItemProps) => {
           />
         </AspectRatio>
       </Card.Header>
-      <Card.Body gap={{ base: "5", md: "6" }}>
+      <Card.Body gap={{ base: "5", md: "6" }} flex="1" display="flex" flexDirection="column">
         <Stack gap="3" flex="1">
           <Stack>
             <Text textStyle="sm" fontWeight="medium" color="brand.500">
