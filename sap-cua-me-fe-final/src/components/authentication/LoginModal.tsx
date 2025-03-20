@@ -53,9 +53,11 @@ export const LoginModal = () => {
         typeof error === "object" &&
         error !== null &&
         "response" in error &&
-        typeof (error as any).response?.data?.message === "string"
+        typeof (error as { response?: { data?: { message?: string } } })
+          .response?.data?.message === "string"
       ) {
-        errorMessage = (error as any).response.data.message;
+        errorMessage = (error as { response: { data: { message: string } } })
+          .response.data.message;
       }
 
       toaster.create({

@@ -25,6 +25,7 @@ export default function AllProductsPage() {
                 if (!fetchedProduct) throw new Error("Product not found.");
                 setProduct(fetchedProduct);
             } catch (err) {
+              console.error("Error fetching product:", err);
                 setError("Failed to fetch product.");
             } finally {
                 setLoading(false);
