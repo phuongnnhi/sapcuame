@@ -1,14 +1,11 @@
 import {
   AspectRatio,
   Container,
-  HStack,
-  Link,
   Stack,
   Text,
   Heading,
   Image,
   Flex,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import { ClientZaloLink } from "./ClientZaloLink";
 
