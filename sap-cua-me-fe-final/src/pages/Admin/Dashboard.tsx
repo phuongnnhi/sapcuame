@@ -18,8 +18,8 @@ const Dashboard: React.FC = () => {
             try {
                 const data = await getAllOrders();
                 console.log('Fetched orders:', data);  // Debugging the response
-                if (data && data.ordersWithProducts) { //data.orders
-                    setOrders(data.ordersWithProducts);
+                if (data && data.orders) { //data.orders
+                    setOrders(data.orders);
                 } else {
                     console.error('Unexpected response format:', data);
                 }
