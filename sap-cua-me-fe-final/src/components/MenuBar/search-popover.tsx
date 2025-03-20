@@ -3,8 +3,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  Input,
-  Icon,
   Popover
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";

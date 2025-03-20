@@ -44,12 +44,23 @@ export const LoginModal = () => {
         });
         window.location.href = "/"; // Redirect to homepage
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      let errorMessage = "Vui lòng kiểm tra thông tin đăng nhập";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as any).response?.data?.message === "string"
+      ) {
+        errorMessage = (error as any).response.data.message;
+      }
+
       toaster.create({
         title: "Đăng nhập thất bại",
-        description:
-          error.response?.data?.message ||
-          "Vui lòng kiểm tra thông tin đăng nhập",
+        description: errorMessage,
         type: "error",
         duration: 3000,
       });
@@ -76,7 +87,9 @@ export const LoginModal = () => {
         <Stack gap="6">
           <Stack gap="5">
             <Field.Root>
-              <Field.Label color="brand.500">Email hoặc Số điện thoại</Field.Label>
+              <Field.Label color="brand.500">
+                Email hoặc Số điện thoại
+              </Field.Label>
               <Input
                 type="text"
                 placeholder="Nhập email hoặc số điện thoại"
@@ -103,7 +116,14 @@ export const LoginModal = () => {
             <Checkbox defaultChecked>Nhớ cho lần sau</Checkbox>
           </HStack>
           <Stack gap="4">
-            <Button onClick={handleLogin} bg="brand.500Alpha80">Đăng nhập</Button>
+            <Button
+              onClick={handleLogin}
+              loading={loading}
+              disabled={loading}
+              bg="brand.500Alpha80"
+            >
+              Đăng nhập
+            </Button>
           </Stack>
         </Stack>
 

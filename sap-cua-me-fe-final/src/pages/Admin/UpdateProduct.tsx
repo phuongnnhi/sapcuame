@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ProductForm from "../../components/Admin/ProductForm";
+import { Product } from "@/types";
 
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
@@ -13,7 +14,7 @@ interface UpdateProductProps {
 const UpdateProduct: React.FC<UpdateProductProps> = () => {
     const params = useParams();
     const id = params?.id as string;
-  const [initialData, setInitialData] = useState<any>(null);
+  const [initialData, setInitialData] = useState<Product | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -24,6 +25,17 @@ const UpdateProduct: React.FC<UpdateProductProps> = () => {
 
     fetchProduct();
   }, [id]);
+
+  const transformInitialData = (data: Product): Partial<ProductForm> => {
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => {
+        if (Array.isArray(value)) {
+          return [key, value.join(", ")]; 
+        }
+        return [key, value];
+      })
+    );
+  };
 
   const handleUpdateProduct = async (formData: FormData) => {
     const response = await fetch(`${BASE_API_URL}/product/${id}`, {
@@ -42,7 +54,7 @@ const UpdateProduct: React.FC<UpdateProductProps> = () => {
     return <p>Loading...</p>;
   }
 
-  return <ProductForm initialData={initialData} onSubmit={handleUpdateProduct} isEditing />;
+  return <ProductForm initialData={transformInitialData(initialData)} onSubmit={handleUpdateProduct} isEditing />;
 };
 
 export default UpdateProduct;

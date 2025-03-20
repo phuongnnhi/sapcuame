@@ -70,7 +70,7 @@ const MarketRules = () => {
               borderColor="whiteAlpha.800"
             />
             <Text pl={4} fontSize="lg">
-              Mẹ ship hàng theo phong cách "cận hiện đại". Nhắn Zalo/Facebook mẹ
+              Mẹ ship hàng theo phong cách 'cận hiện đại'. Nhắn Zalo/Facebook mẹ
               để chốt đơn rồi mẹ gửi anh Grab ruột giao qua cho bạn nhen.
             </Text>
           </VStack>

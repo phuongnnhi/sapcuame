@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Product } from "@/types";
 
 import {
   Box,
   Button,
   Grid,
-  GridItem,
   Image,
   Stack,
   Text,
@@ -22,7 +21,6 @@ import {
   getProductById,
   getProducts,
   removeCartItem,
-  updateCartItem,
 } from "@/app/apiFunctions";
 import { ProductItem } from "./ProductCard";
 import { ProductColorPicker } from "./product-color-picker";
@@ -84,36 +82,37 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
     fetchData();
   }, [productId]);
 
-  const checkCartStatus = async () => {
+  const checkCartStatus = useCallback(async () => {
     if (!product) return;
   
     try {
-      console.log("🔄 Fetching fresh cart data...");
+      console.log("Fetching fresh cart data...");
       const cart = await getCart();
   
       if (cart && Array.isArray(cart.productCarts)) {
-        const cartItem = cart.productCarts.find((item) => item.productId._id === product._id);
+        const cartItem = cart.productCarts.find(
+          (item) => item.productId._id === product._id
+        );
   
         if (cartItem) {
-          console.log("✅Product is in cart, updating state.");
+          console.log(" Product is in cart, updating state.");
           setCartItemId(cartItem._id);
           setIsInCart(true);
         } else {
-          console.log(" Product is NOT in cart.");
+          console.log("Product is NOT in cart.");
           setCartItemId(null);
           setIsInCart(false);
         }
       }
     } catch (error) {
-      console.error(" Failed to fetch cart status:", error);
+      console.error("Failed to fetch cart status:", error);
     }
-  };
+  }, [product]); //  Added `product` as a dependency
   
   /** Run checkCartStatus when the product loads */
   useEffect(() => {
-    if (!product) return;
     checkCartStatus();
-  }, [product]);
+  }, [checkCartStatus]); 
 
   /** Set initial variety and price after product loads */
   useEffect(() => {
@@ -354,6 +353,8 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
               bg={isInCart ? "gray.500" : "brand.700"}
               size="lg"
               onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
+              loading={isLoading}
+              disabled={isLoading || !!cartItemId} 
             >
               {isInCart ? "Xóa khỏi giỏ hàng" : "Thêm vào giỏ hàng"}
             </Button>

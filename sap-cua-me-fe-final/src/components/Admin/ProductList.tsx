@@ -1,10 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
-import {
-  getProducts,
-  deleteProduct,
-  updateProduct,
-} from "../../app/apiFunctions";
+import { getProducts, deleteProduct } from "../../app/apiFunctions";
 import {
   Table,
   TableBody,
@@ -93,7 +89,7 @@ const ProductList: React.FC = () => {
 
   return (
     <Container>
-      <Typography variant="h4" sx={{color:"black"}} gutterBottom>
+      <Typography variant="h4" sx={{ color: "black" }} gutterBottom>
         Danh sách sản phẩm
       </Typography>
 
@@ -163,7 +159,9 @@ const ProductList: React.FC = () => {
                   variant="contained"
                   color="primary"
                   size="small"
-                  onClick={() => router.push(`/admin/products/${product._id}/edit`)}
+                  onClick={() =>
+                    router.push(`/admin/products/${product._id}/edit`)
+                  }
                 >
                   Edit
                 </Button>

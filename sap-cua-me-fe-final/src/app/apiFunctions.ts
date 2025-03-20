@@ -1,5 +1,5 @@
 import apiService from "./apiServices";
-import { Cart, Product, ProductOrder, ProductOrderResponse, ProductResponse, Order, OrderResponse } from "@/types";
+import { Cart, Product, ProductResponse, Order, OrderResponse } from "@/types";
 
 export const checkoutOrder = async (cart: Cart): Promise<void> => {
   try {
@@ -63,9 +63,18 @@ export const updateOrderStatus = async (
   }
 };
 
+interface ProductQueryParams {
+  category?: string;
+  tags?: string;
+  search?: string;
+  sortBy?: "price" | "rating" | "newest"; // Adjust based on your API's sorting options
+  page?: number;
+  limit?: number;
+}
+
 // Get all products with pagination, search, and filters
 export const getProducts = async (
-  params?: Record<string, any>
+  params?: ProductQueryParams
 ): Promise<ProductResponse> => {
   try {
     const response = await apiService.get<ProductResponse>("/product", {

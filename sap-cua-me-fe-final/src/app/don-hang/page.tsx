@@ -1,4 +1,3 @@
-import CartPage from "@/components/Cart/CartPage";
 import { Footer } from "@/components/Footer";
 import { MenuBlock } from "@/components/MenuBar/MenuBlock";
 import OrderPage from "@/components/Order/OrderPage";

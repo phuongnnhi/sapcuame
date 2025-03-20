@@ -46,12 +46,23 @@ export const RegisterModal = () => {
         });
         window.location.href = "/"; // Redirect to homepage or login page
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      let errorMessage = "Vui lòng kiểm tra thông tin và thử lại";
+  
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as any).response?.data?.message === "string"
+      ) {
+        errorMessage = (error as any).response.data.message;
+      }
+  
       toaster.create({
         title: "Đăng ký thất bại",
-        description:
-          error.response?.data?.message ||
-          "Vui lòng kiểm tra thông tin và thử lại",
+        description: errorMessage,
         type: "error",
         duration: 3000,
       });
@@ -131,7 +142,7 @@ export const RegisterModal = () => {
             <Checkbox defaultChecked>Đồng ý với điều khoản</Checkbox>
           </HStack>
           <Stack gap="4">
-            <Button onClick={handleRegister} bg="brand.500Alpha80">
+            <Button onClick={handleRegister} loading={loading} disabled={loading} bg="brand.500Alpha80">
               Đăng ký
             </Button>
           </Stack>

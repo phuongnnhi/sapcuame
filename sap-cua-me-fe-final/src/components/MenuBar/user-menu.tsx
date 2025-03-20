@@ -6,9 +6,9 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "@/components/ui/menu";
-import { Avatar, Button, Icon } from "@chakra-ui/react";
+import { Button, Icon } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCircleHelp, LuLogOut, LuPackage, LuSettings, LuUser } from "react-icons/lu";
+import { LuLogOut, LuPackage } from "react-icons/lu";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "@/app/authApi";
@@ -49,11 +49,11 @@ export const UserMenu = () => {
             </Icon>
           </MenuTrigger>
           <MenuContent>
-          <Link href="/don-hang">
-            <MenuItem value="don-hang">
-              <LuPackage />
-              Đơn hàng
-            </MenuItem>
+            <Link href="/don-hang">
+              <MenuItem value="don-hang">
+                <LuPackage />
+                Đơn hàng
+              </MenuItem>
             </Link>
             <MenuSeparator />
             <MenuItem value="logout" onClick={handleLogout}>

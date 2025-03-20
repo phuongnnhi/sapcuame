@@ -4,7 +4,6 @@ import {
   Box,
   Flex,
   Input,
-  Text,
   Button,
   SimpleGrid,
   Spinner,
@@ -33,8 +32,9 @@ export const ProductPage: React.FC = () => {
   const searchParams = useSearchParams();
   const initialSearchTerm = searchParams?.get("search") || "";
   const initialCategory = searchParams?.get("category") || "";
-  const [searchTerm, setSearchTerm] = useState<string>(initialSearchTerm); 
-  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+  const [searchTerm, setSearchTerm] = useState<string>(initialSearchTerm);
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>(initialCategory);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const limit = 9;
@@ -99,7 +99,13 @@ export const ProductPage: React.FC = () => {
             align="center"
             height="100%"
           >
-            <Heading fontWeight="bold" textStyle="2xl" mb={2} color="brand.700" textAlign="left">
+            <Heading
+              fontWeight="bold"
+              textStyle="2xl"
+              mb={2}
+              color="brand.700"
+              textAlign="left"
+            >
               Quầy hàng
             </Heading>
             <Stack
