@@ -42,7 +42,8 @@ export const LoginModal = () => {
           type: "success",
           duration: 2000,
         });
-        window.location.href = "/"; // Redirect to homepage
+        const previousPage = sessionStorage.getItem("previousPage") || "/";
+        window.location.href = previousPage;
       }
     } catch (error: unknown) {
       let errorMessage = "Vui lòng kiểm tra thông tin đăng nhập";

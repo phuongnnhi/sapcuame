@@ -4,9 +4,10 @@ import { updateCartItem } from "@/app/apiFunctions";
 
 interface QuantitySelectProps {
   data: { _id: string; quantity: number };
+  onQuantityChange: (cartItemId: string, newQuantity: number) => void;
 }
 
-const QuantitySelect = ({ data }: QuantitySelectProps) => {
+const QuantitySelect = ({ data, onQuantityChange }: QuantitySelectProps) => {
   const [quantity, setQuantity] = useState(data.quantity);
   const [loading, setLoading] = useState(false);
 
@@ -20,6 +21,7 @@ const QuantitySelect = ({ data }: QuantitySelectProps) => {
     
     try {
       await updateCartItem(data._id, newQuantity);
+      onQuantityChange(data._id, newQuantity);
     } catch (error) {
       console.error("Failed to update quantity:", error);
     } finally {

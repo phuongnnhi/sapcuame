@@ -14,9 +14,18 @@ import { useEffect, useState } from "react";
 import { Cart } from "@/types";
 import CartItem from "@/components/Cart/CartItem";
 import { checkoutOrder, getCart, removeCartItem } from "@/app/apiFunctions";
+import { useMemo } from "react";
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart | null>(null);
+
+  const total = useMemo(() => {
+    if (!cart || !cart.productCarts) return 0;
+    return cart.productCarts.reduce(
+      (acc, item) => acc + item.productId.price * item.quantity,
+      0
+    );
+  }, [cart]);
 
   useEffect(() => {
     // Fetch cart data
@@ -48,6 +57,19 @@ const CartPage = () => {
     }
   };
 
+  const handleQuantityChange = (cartItemId: string, newQuantity: number) => {
+    setCart((prevCart) => {
+      if (!prevCart) return null;
+  
+      return {
+        ...prevCart,
+        productCarts: prevCart.productCarts.map((item) =>
+          item._id === cartItemId ? { ...item, quantity: newQuantity } : item
+        ),
+      };
+    });
+  };
+
   const handleCheckout = async () => {
     if (!cart || cart.productCarts.length === 0) {
       alert("Giỏ hàng trống, không thể thanh toán.");
@@ -77,12 +99,6 @@ const CartPage = () => {
     return <Text>Loading cart...</Text>;
   }
 
-  // Calculate totals
-  const total = cart.productCarts.reduce(
-    (acc, item) => acc + item.productId.price * item.quantity,
-    0
-  );
-
   return (
     <Box maxW="container.lg" mx="auto" py={8}>
       <Heading mb={6} color="brand.500" textStyle="3xl">
@@ -93,7 +109,7 @@ const CartPage = () => {
         {/* Cart Items */}
         <Stack flex="2" gap={6}>
           {cart.productCarts.map((item) => (
-            <CartItem key={item._id} data={item} onRemove={handleRemove} />
+            <CartItem key={item._id} data={item} onRemove={handleRemove} onQuantityChange={handleQuantityChange}/>
           ))}
         </Stack>
 

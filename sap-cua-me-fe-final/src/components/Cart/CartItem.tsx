@@ -5,9 +5,10 @@ import QuantitySelect from "./QuantitySelect";
 interface CartItemProps {
   data: ProductCart;
   onRemove: (cartItemId: string) => void;
+  onQuantityChange: (cartItemId: string, newQuantity: number) => void;
 }
 
-export const CartItem = ({ data, onRemove }: CartItemProps) => {
+export const CartItem = ({ data, onRemove, onQuantityChange }: CartItemProps) => {
   return (
     <Flex justify="space-between" align="flex-start" p={4} borderRadius="md">
       {/* Product Image */}
@@ -25,9 +26,9 @@ export const CartItem = ({ data, onRemove }: CartItemProps) => {
           {data.productId.name}
         </Text>
         <Text fontSize="sm">
-          Color: {data.productId.colors?.[0]}, Size: {data.productId.size?.[0]}
+          Màu sắc: {data.productId.colors?.[0]}, Kích cỡ: {data.productId.size?.[0]}
         </Text>
-        <QuantitySelect data={data} />
+        <QuantitySelect data={data} onQuantityChange={onQuantityChange} />
       </Stack>
 
       {/* Price and Actions */}
