@@ -63,11 +63,13 @@ export const loginUser = async (loginData: {
 // Log out a user
 export const logoutUser = async (): Promise<void> => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("No token found");
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (!refreshToken) throw new Error("No token found");
   
-      await apiService.post("/auth/logout", {}, {
-        headers: { Authorization: `Bearer ${token}` },
+      await apiService.post("/auth/logout", {refreshToken}, {
+        headers: {
+          "Content-Type": "application/json"
+        },
       });
   
       localStorage.removeItem("token");

@@ -1,5 +1,5 @@
 // src/theme.ts
-import { createSystem, defaultConfig } from "@chakra-ui/react";
+import { createSystem, defaultConfig} from "@chakra-ui/react";
 import "@fontsource/eb-garamond/400.css";
 import "@fontsource/eb-garamond/500.css";
 import "@fontsource/eb-garamond/600.css";
@@ -8,6 +8,7 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
+
 
 const system = createSystem(defaultConfig, {
   theme: {

@@ -96,6 +96,7 @@ export const LoginModal = () => {
                 type="text"
                 placeholder="Nhập email hoặc số điện thoại"
                 value={credentials.emailOrPhone}
+                color="black"
                 onChange={(e) =>
                   setCredentials({
                     ...credentials,
@@ -108,6 +109,7 @@ export const LoginModal = () => {
               <Field.Label color="brand.500">Mật khẩu</Field.Label>
               <PasswordInput
                 name="password"
+                color="black"
                 placeholder="Nhập mật khẩu"
                 value={credentials.password}
                 onChange={handleChange}
@@ -129,7 +131,7 @@ export const LoginModal = () => {
           </Stack>
         </Stack>
 
-        <Text textStyle="sm" color="fg.muted" textAlign="center">
+        <Text textStyle="sm" color="brand.500" textAlign="center">
           Chưa có tài khoản?{" "}
           <Link variant="underline" href="/dang-ky">
             Đăng ký

@@ -128,6 +128,7 @@ export const RegisterModal = () => {
                 name="address"
                 value={user.address}
                 onChange={handleChange}
+                color="black"
               />
             </Field.Root>
             <Field.Root>
@@ -137,6 +138,7 @@ export const RegisterModal = () => {
                 placeholder="Nhập mật khẩu"
                 value={user.password}
                 onChange={handleChange}
+                color="black"
               />
             </Field.Root>
           </Stack>
@@ -155,7 +157,7 @@ export const RegisterModal = () => {
           </Stack>
         </Stack>
 
-        <Text textStyle="sm" color="fg.muted" textAlign="center">
+        <Text textStyle="sm" color="brand.500" textAlign="center">
           Đã có tài khoản?{" "}
           <Link variant="underline" href="#">
             Đăng nhập
