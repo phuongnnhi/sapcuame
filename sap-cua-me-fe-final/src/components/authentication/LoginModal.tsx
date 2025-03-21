@@ -1,4 +1,4 @@
-"use clients"
+"use client";
 
 import { loginUser } from "@/app/authApi";
 import { Checkbox } from "@/components/ui/checkbox";
