@@ -16,6 +16,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { InferType } from "yup";
 
 // Define validation schema
 const schema = yup.object().shape({
@@ -35,16 +36,18 @@ const schema = yup.object().shape({
     .required("Mật khẩu không được để trống"),
 });
 
+type RegisterFormData = InferType<typeof schema>;
+
 export const RegisterModal = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<RegisterFormData>({
     resolver: yupResolver(schema),
   });
 
-  const handleRegister = async (data: any) => {
+  const handleRegister = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data);
       if (response?.user) {

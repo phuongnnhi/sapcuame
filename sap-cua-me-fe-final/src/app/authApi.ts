@@ -64,7 +64,6 @@ export const loginUser = async (loginData: {
 export const logoutUser = async (): Promise<void> => {
     try {
       const token = localStorage.getItem("token");
-      const refreshToken = localStorage.getItem("refreshToken");
       if (!token) throw new Error("No token found");
   
       await apiService.post("/auth/logout", {token}, {
@@ -80,28 +79,6 @@ export const logoutUser = async (): Promise<void> => {
       throw error;
     }
   };
-
-// // Forgot Password (Request Reset Link)
-// export const forgotPassword = async (emailOrPhone: { email?: string; phone?: string }): Promise<AuthResponse> => {
-//   try {
-//     const response = await apiService.post<AuthResponse>("/auth/forgot-password", emailOrPhone);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error requesting password reset:", error);
-//     throw error;
-//   }
-// };
-
-// // Reset Password
-// export const resetPassword = async (resetData: { token: string; newPassword: string }): Promise<AuthResponse> => {
-//   try {
-//     const response = await apiService.post<AuthResponse>("/auth/reset-password", resetData);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error resetting password:", error);
-//     throw error;
-//   }
-// };
 
 // Get Logged-In User Details
 export const getUserDetails = async (): Promise<AuthResponse> => {

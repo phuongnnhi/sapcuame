@@ -14,7 +14,7 @@ import { ProductColorPicker } from "@/components/Product/ProductColorPicker";
 import { useEffect, useState } from "react";
 import { BsCartCheckFill } from "react-icons/bs";
 import Link from "next/link";
-import { addToCart, getCart, removeCartItem } from "@/app/apiFunctions";
+import { addToCart, removeCartItem } from "@/app/apiFunctions";
 import { useCart } from "@/components/CartContext";
 
 interface ProductItemProps {

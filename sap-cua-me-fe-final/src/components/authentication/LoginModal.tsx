@@ -19,17 +19,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toaster } from "../ui/toaster";
 import { useRouter } from "next/navigation";
+import { InferType } from "yup";
 
 // Validation Schema
 const schema = yup.object().shape({
   emailOrPhone: yup
     .string()
     .required("Email hoặc Số điện thoại không được để trống")
-    .test("is-email-or-phone", "Vui lòng nhập email hoặc số điện thoại hợp lệ", (value) =>
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10,12}$/.test(value)
+    .test(
+      "is-email-or-phone",
+      "Vui lòng nhập email hoặc số điện thoại hợp lệ",
+      (value) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10,12}$/.test(value)
     ),
   password: yup.string().required("Mật khẩu không được để trống"),
 });
+
+type LoginFormData = InferType<typeof schema>;
 
 export const LoginModal = () => {
   const router = useRouter();
@@ -38,11 +44,11 @@ export const LoginModal = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
   });
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: LoginFormData) => {
     try {
       const response = await loginUser({
         email: data.emailOrPhone.includes("@") ? data.emailOrPhone : undefined,
@@ -105,7 +111,9 @@ export const LoginModal = () => {
                   placeholder="Nhập email hoặc số điện thoại"
                   color="black"
                 />
-                <Field.ErrorText>{errors.emailOrPhone?.message}</Field.ErrorText>
+                <Field.ErrorText>
+                  {errors.emailOrPhone?.message}
+                </Field.ErrorText>
               </Field.Root>
 
               {/* Password Field */}
@@ -125,7 +133,11 @@ export const LoginModal = () => {
             </HStack>
 
             <Stack gap="4">
-              <Button type="submit" loading={isSubmitting} bg="brand.500Alpha80">
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                bg="brand.500Alpha80"
+              >
                 Đăng nhập
               </Button>
             </Stack>
