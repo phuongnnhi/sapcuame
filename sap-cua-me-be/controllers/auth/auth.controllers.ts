@@ -46,13 +46,6 @@ export const registerUser = async (req: CustomRequest, res: Response) => {
     //Generate a token
     const token = generateToken(user._id.toString());
     const refreshToken = generateRefreshToken(user._id.toString());
-      // Set the token as a cookie
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // use secure flag in production
-        maxAge: 86400 * 1000, // 1 day in milliseconds
-        path: '/',
-      });
 
     res.status(201).json({
       message: "User registered successfully",
@@ -107,13 +100,6 @@ export const loginUser = async (req: CustomRequest, res: Response) => {
     // Generate a token
     const token = generateToken(user._id.toString());
     const refreshToken = generateRefreshToken(user._id.toString());
-    // Set the token as a cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // use secure flag in production
-      maxAge: 86400 * 1000, // 1 day in milliseconds
-      path: '/',
-    });
 
    res.status(200).json({
       message: "Login successful",
