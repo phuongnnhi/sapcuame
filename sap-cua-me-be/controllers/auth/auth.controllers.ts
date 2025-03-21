@@ -45,6 +45,7 @@ export const registerUser = async (req: CustomRequest, res: Response) => {
 
     //Generate a token
     const token = generateToken(user._id.toString());
+    const refreshToken = generateRefreshToken(user._id.toString());
 
     res.status(201).json({
       message: "User registered successfully",
@@ -56,6 +57,7 @@ export const registerUser = async (req: CustomRequest, res: Response) => {
         role: user.role,
       },
       token,
+      refreshToken
     });
   } catch (error) {
     console.error(error);
@@ -119,9 +121,9 @@ export const loginUser = async (req: CustomRequest, res: Response) => {
 //Log out the current user
 export const logoutUser = async (req: CustomRequest, res: Response) => {
   try {
-    const refreshToken = req.body.refreshToken || req.headers["x-refresh-token"];
-    if (!refreshToken) {
-       res.status(400).json({ message: "Refresh token is required" });
+    const token = req.body.token || req.headers["x-refresh-token"];
+    if (!token) {
+       res.status(400).json({ message: "Token is required" });
        return
     }
 
