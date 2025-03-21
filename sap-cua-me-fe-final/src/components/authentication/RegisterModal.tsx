@@ -1,3 +1,4 @@
+"use clients"
 import { registerUser } from "@/app/authApi";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PasswordInput } from "@/components/ui/password-input";
