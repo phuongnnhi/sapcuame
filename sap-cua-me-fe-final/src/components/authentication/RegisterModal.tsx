@@ -4,78 +4,54 @@ import { PasswordInput } from "@/components/ui/password-input";
 import {
   Button,
   Container,
-  Field,
   HStack,
   Heading,
   Input,
   Stack,
   Text,
   Link,
+  Field,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { toaster } from "../ui/toaster";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+// Define validation schema
+const schema = yup.object().shape({
+  name: yup.string().required("Họ và tên không được để trống"),
+  email: yup
+    .string()
+    .email("Email không hợp lệ")
+    .required("Email không được để trống"),
+  phone: yup
+    .string()
+    .matches(/^\d{10,12}$/, "Số điện thoại phải có từ 10 đến 12 chữ số")
+    .required("Số điện thoại không được để trống"),
+  address: yup.string().required("Địa chỉ không được để trống"),
+  password: yup
+    .string()
+    .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+    .required("Mật khẩu không được để trống"),
+});
 
 export const RegisterModal = () => {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
-  const [loading, setLoading] = useState(false);
-
-  const handleRegister = async () => {
-    setLoading(true);
+  const handleRegister = async (data: any) => {
     try {
-      const response = await registerUser({
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-        password: user.password,
-      });
-
+      const response = await registerUser(data);
       if (response?.user) {
-        toaster.create({
-          title: "Đăng ký thành công!",
-          description: "Bạn đã tạo tài khoản thành công. Vui lòng đăng nhập.",
-          type: "success",
-          duration: 2000,
-        });
         window.location.href = "/"; // Redirect to homepage or login page
       }
-    } catch (error: unknown) {
-      let errorMessage = "Vui lòng kiểm tra thông tin và thử lại";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error &&
-        typeof (error as { response?: { data?: { message?: string } } })
-          .response?.data?.message === "string"
-      ) {
-        errorMessage = (error as { response: { data: { message: string } } })
-          .response.data.message;
-      }
-
-      toaster.create({
-        title: "Đăng ký thất bại",
-        description: errorMessage,
-        type: "error",
-        duration: 3000,
-      });
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error("Lỗi đăng ký:", error);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -88,74 +64,60 @@ export const RegisterModal = () => {
           <Text color="fg.muted">Bắt đầu thăm quan Sạp của mẹ</Text>
         </Stack>
 
-        <Stack gap="6">
-          <Stack gap="5">
-            <Field.Root>
-              <Field.Label color="brand.500">Họ và tên</Field.Label>
-              <Input
-                type="text"
-                placeholder="Nhập họ và tên"
-                name="name"
-                value={user.name}
-                onChange={handleChange}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label color="brand.500">Email</Field.Label>
-              <Input
-                type="email"
-                placeholder="Nhập email"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label color="brand.500">Số điện thoại</Field.Label>
-              <Input
-                type="text"
-                placeholder="Nhập số điện thoại"
-                name="phone"
-                value={user.phone}
-                onChange={handleChange}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label color="brand.500">Địa chỉ</Field.Label>
-              <Input
-                type="text"
-                placeholder="Nhập địa chỉ"
-                name="address"
-                value={user.address}
-                onChange={handleChange}
-                color="black"
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label color="brand.500">Mật khẩu</Field.Label>
-              <PasswordInput
-                name="password"
-                placeholder="Nhập mật khẩu"
-                value={user.password}
-                onChange={handleChange}
-                color="black"
-              />
-            </Field.Root>
+        <form onSubmit={handleSubmit(handleRegister)}>
+          <Stack gap="6">
+            <Stack gap="5">
+              {/* Name Field */}
+              <Field.Root invalid={!!errors.name}>
+                <Field.Label color="brand.500">Họ và tên</Field.Label>
+                <Input {...register("name")} placeholder="Nhập họ và tên" />
+                <Field.ErrorText>{errors.name?.message}</Field.ErrorText>
+              </Field.Root>
+
+              {/* Email Field */}
+              <Field.Root invalid={!!errors.email}>
+                <Field.Label color="brand.500">Email</Field.Label>
+                <Input {...register("email")} placeholder="Nhập email" />
+                <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
+              </Field.Root>
+
+              {/* Phone Field */}
+              <Field.Root invalid={!!errors.phone}>
+                <Field.Label color="brand.500">Số điện thoại</Field.Label>
+                <Input {...register("phone")} placeholder="Nhập số điện thoại" />
+                <Field.ErrorText>{errors.phone?.message}</Field.ErrorText>
+              </Field.Root>
+
+              {/* Address Field */}
+              <Field.Root invalid={!!errors.address}>
+                <Field.Label color="brand.500">Địa chỉ</Field.Label>
+                <Input {...register("address")} placeholder="Nhập địa chỉ" />
+                <Field.ErrorText>{errors.address?.message}</Field.ErrorText>
+              </Field.Root>
+
+              {/* Password Field */}
+              <Field.Root invalid={!!errors.password}>
+                <Field.Label color="brand.500">Mật khẩu</Field.Label>
+                <PasswordInput {...register("password")} placeholder="Nhập mật khẩu" />
+                <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
+              </Field.Root>
+            </Stack>
+
+            <HStack justify="space-between">
+              <Checkbox defaultChecked>Đồng ý với điều khoản</Checkbox>
+            </HStack>
+
+            <Stack gap="4">
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                bg="brand.500Alpha80"
+              >
+                Đăng ký
+              </Button>
+            </Stack>
           </Stack>
-          <HStack justify="space-between">
-            <Checkbox defaultChecked>Đồng ý với điều khoản</Checkbox>
-          </HStack>
-          <Stack gap="4">
-            <Button
-              onClick={handleRegister}
-              loading={loading}
-              disabled={loading}
-              bg="brand.500Alpha80"
-            >
-              Đăng ký
-            </Button>
-          </Stack>
-        </Stack>
+        </form>
 
         <Text textStyle="sm" color="brand.500" textAlign="center">
           Đã có tài khoản?{" "}

@@ -6,7 +6,7 @@ import {
   Popover
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
-import { SearchField } from "./search-field";
+import { SearchField } from "./SearchField";
 
 interface SearchPopoverProps {
   onSearchChange?: (value: string) => void;

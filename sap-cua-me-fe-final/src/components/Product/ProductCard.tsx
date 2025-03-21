@@ -10,11 +10,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { Product } from "@/types";
-import { ProductColorPicker } from "@/components/Product/product-color-picker";
-import { useCallback, useEffect, useState } from "react";
+import { ProductColorPicker } from "@/components/Product/ProductColorPicker";
+import { useEffect, useState } from "react";
 import { BsCartCheckFill } from "react-icons/bs";
 import Link from "next/link";
 import { addToCart, getCart, removeCartItem } from "@/app/apiFunctions";
+import { useCart } from "@/components/CartContext";
 
 interface ProductItemProps {
   data: Product;
@@ -23,42 +24,34 @@ interface ProductItemProps {
 export const ProductItem = (props: ProductItemProps) => {
   const { data } = props;
   const productImage = data.images?.[0] ?? "/placeholder.jpg";
+  const { cart, refreshCart } = useCart();
 
   const [isInCart, setIsInCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cartItemId, setCartItemId] = useState<string | null>(null);
 
   // Check if product is already in cart on mount
-  const updateCartState = useCallback(async () => {
-    try {
-      const cart = await getCart();
-      if (cart && Array.isArray(cart.productCarts)) {
-        const cartItem = cart.productCarts.find((item) => {
-          return item.productId && item.productId._id === data._id;
-        });
-
-        if (cartItem) {
-          setCartItemId(cartItem._id);
-          setIsInCart(true);
-        } else {
-          setCartItemId(null);
-          setIsInCart(false);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching cart status:", error);
+  //useMemo => memory values
+  // useCallback => function
+// Whenever the global cart changes, update this product's cart status
+useEffect(() => {
+  if (cart && Array.isArray(cart)) {
+    const cartItem = cart.find((item) => item.productId._id === data._id);
+    if (cartItem) {
+      setCartItemId(cartItem._id);
+      setIsInCart(true);
+    } else {
+      setCartItemId(null);
+      setIsInCart(false);
     }
-  }, [data._id]);
-
-  useEffect(() => {
-    updateCartState();
-  }, [updateCartState]);
+  }
+}, [cart, data._id]);
 
   const handleAddToCart = async () => {
     try {
       setIsLoading(true);
       await addToCart(data._id, 1);
-      await updateCartState();
+      await refreshCart();
     } catch (error) {
       console.error("Failed to add to cart:", error);
     } finally {
@@ -72,7 +65,7 @@ export const ProductItem = (props: ProductItemProps) => {
     try {
       setIsLoading(true);
       await removeCartItem(cartItemId); // Call API to remove product from cart
-      await updateCartState();
+      await refreshCart();
     } catch (error) {
       console.error("Failed to remove from cart:", error);
     } finally {

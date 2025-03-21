@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Product } from "@/types";
 
 import {
@@ -23,9 +23,9 @@ import {
   removeCartItem,
 } from "@/app/apiFunctions";
 import { ProductItem } from "./ProductCard";
-import { ProductColorPicker } from "./product-color-picker";
-// import { Divider } from "@mui/material";
+import { ProductColorPicker } from "./ProductColorPicker";
 import { LuHouse, LuShoppingBag, LuSmile } from "react-icons/lu";
+import { useCart } from "@/components/CartContext";
 
 interface ItemPageProps {
   productId: string;
@@ -47,6 +47,8 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [cartItemId, setCartItemId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+
+  const { cart, refreshCart } = useCart();
 
   /** Fetch product data */
   useEffect(() => {
@@ -81,38 +83,22 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
 
     fetchData();
   }, [productId]);
-
-  const checkCartStatus = useCallback(async () => {
-    if (!product) return;
   
-    try {
-      console.log("Fetching fresh cart data...");
-      const cart = await getCart();
-  
-      if (cart && Array.isArray(cart.productCarts)) {
-        const cartItem = cart.productCarts.find(
+    // Update local cart-related state when the global cart or product changes
+    useEffect(() => {
+      if (product && cart && Array.isArray(cart)) {
+        const cartItem = cart.find(
           (item) => item.productId._id === product._id
         );
-  
         if (cartItem) {
-          console.log(" Product is in cart, updating state.");
           setCartItemId(cartItem._id);
           setIsInCart(true);
         } else {
-          console.log("Product is NOT in cart.");
           setCartItemId(null);
           setIsInCart(false);
         }
       }
-    } catch (error) {
-      console.error("Failed to fetch cart status:", error);
-    }
-  }, [product]); //  Added `product` as a dependency
-  
-  /** Run checkCartStatus when the product loads */
-  useEffect(() => {
-    checkCartStatus();
-  }, [checkCartStatus]); 
+    }, [cart, product]);
 
   /** Set initial variety and price after product loads */
   useEffect(() => {
@@ -126,33 +112,28 @@ export const ItemPage: React.FC<ItemPageProps> = ({ productId }) => {
     }
   }, [product]);
 
-  if (loading) return <Text>Loading product...</Text>;
+  if (loading) return <Text>Đang tải sản phẩm...</Text>;
   if (error) return <Text>{error}</Text>;
-  if (!product) return <Text>Product not found.</Text>;
+  if (!product) return <Text>Không tìm thấy sản phẩm này.</Text>;
 
   const handleAddToCart = async () => {
     if (!product) return;
-  
     try {
       setIsLoading(true);
-      console.log("🛒 Adding product to cart:", { productId: product._id, quantity });
-  
+      console.log("🛒 Adding product to cart:", {
+        productId: product._id,
+        quantity,
+      });
+
       await addToCart(product._id, quantity);
-  
-      //  Immediately update UI state to show the item in the cart
-      setIsInCart(true);
-      setCartItemId(product._id);
-  
-      // Wait before checking the cart to prevent fetching stale data
-      setTimeout(async () => {
-        await checkCartStatus();
-      }, 500);
+      await refreshCart();
     } catch (error) {
-      console.error(" Failed to add to cart:", error);
+      console.error("Failed to add to cart:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const handleRemoveFromCart = async () => {
     if (!product) return;

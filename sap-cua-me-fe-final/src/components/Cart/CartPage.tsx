@@ -31,6 +31,7 @@ const CartPage = () => {
     // Fetch cart data
     const fetchCart = async () => {
       try {
+        console.log('cart page');
         const cartData = await getCart();
         setCart(cartData);
       } catch (error) {
@@ -72,14 +73,14 @@ const CartPage = () => {
 
   const handleCheckout = async () => {
     if (!cart || cart.productCarts.length === 0) {
-      alert("Giỏ hàng trống, không thể thanh toán.");
+      alert("Giỏ hàng trống, không thể tạo đơn hàng.");
       return;
     }
 
     try {
       console.log("Cart Products:", cart.productCarts);
       await checkoutOrder(cart);
-      alert("Thanh toán thành công!");
+      alert("Tạo đơn hàng thành công!");
 
       // Clear cart after checkout
       setCart((prevCart) =>
@@ -96,7 +97,7 @@ const CartPage = () => {
   };
 
   if (!cart) {
-    return <Text>Loading cart...</Text>;
+    return <Text>Đang tải giỏ hàng</Text>;
   }
 
   return (
@@ -130,7 +131,7 @@ const CartPage = () => {
               size="lg"
               onClick={handleCheckout}
             >
-              Thanh toán
+              Tạo đơn hàng
             </Button>
           </Stack>
         </Box>

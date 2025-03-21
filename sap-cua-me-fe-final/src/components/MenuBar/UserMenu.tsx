@@ -29,6 +29,7 @@ export const UserMenu = () => {
     try {
       await logoutUser();
       setIsLoggedIn(false);
+      router.push("/dang-nhap");
     } catch (error) {
       console.error("Logout failed:", error);
     }

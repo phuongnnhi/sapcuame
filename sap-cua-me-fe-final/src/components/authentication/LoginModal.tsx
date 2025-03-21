@@ -12,27 +12,40 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { toaster } from "../ui/toaster";
+import { useRouter } from "next/navigation";
+
+// Validation Schema
+const schema = yup.object().shape({
+  emailOrPhone: yup
+    .string()
+    .required("Email hoặc Số điện thoại không được để trống")
+    .test("is-email-or-phone", "Vui lòng nhập email hoặc số điện thoại hợp lệ", (value) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10,12}$/.test(value)
+    ),
+  password: yup.string().required("Mật khẩu không được để trống"),
+});
 
 export const LoginModal = () => {
-  const [credentials, setCredentials] = useState({
-    emailOrPhone: "",
-    password: "",
-  });
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleLogin = async () => {
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const handleLogin = async (data: any) => {
     try {
       const response = await loginUser({
-        email: credentials.emailOrPhone.includes("@")
-          ? credentials.emailOrPhone
-          : undefined,
-        phone: !credentials.emailOrPhone.includes("@")
-          ? credentials.emailOrPhone
-          : undefined,
-        password: credentials.password,
+        email: data.emailOrPhone.includes("@") ? data.emailOrPhone : undefined,
+        phone: !data.emailOrPhone.includes("@") ? data.emailOrPhone : undefined,
+        password: data.password,
       });
 
       if (response.token) {
@@ -42,12 +55,10 @@ export const LoginModal = () => {
           type: "success",
           duration: 2000,
         });
-        const previousPage = sessionStorage.getItem("previousPage") || "/";
-        window.location.href = previousPage;
+        router.push("/");
       }
-    } catch (error: unknown) {
+    } catch (error) {
       let errorMessage = "Vui lòng kiểm tra thông tin đăng nhập";
-
       if (error instanceof Error) {
         errorMessage = error.message;
       } else if (
@@ -60,21 +71,13 @@ export const LoginModal = () => {
         errorMessage = (error as { response: { data: { message: string } } })
           .response.data.message;
       }
-
       toaster.create({
         title: "Đăng nhập thất bại",
         description: errorMessage,
         type: "error",
         duration: 3000,
       });
-    } finally {
-      setLoading(false);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -87,50 +90,45 @@ export const LoginModal = () => {
           <Text color="fg.muted">Quay lại thăm Sạp của mẹ</Text>
         </Stack>
 
-        <Stack gap="6">
-          <Stack gap="5">
-            <Field.Root>
-              <Field.Label color="brand.500">
-                Email hoặc Số điện thoại
-              </Field.Label>
-              <Input
-                type="text"
-                placeholder="Nhập email hoặc số điện thoại"
-                value={credentials.emailOrPhone}
-                color="black"
-                onChange={(e) =>
-                  setCredentials({
-                    ...credentials,
-                    emailOrPhone: e.target.value,
-                  })
-                }
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label color="brand.500">Mật khẩu</Field.Label>
-              <PasswordInput
-                name="password"
-                color="black"
-                placeholder="Nhập mật khẩu"
-                value={credentials.password}
-                onChange={handleChange}
-              />
-            </Field.Root>
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <Stack gap="6">
+            <Stack gap="5">
+              {/* Email/Phone Field */}
+              <Field.Root invalid={!!errors.emailOrPhone}>
+                <Field.Label color="brand.500">
+                  Email hoặc Số điện thoại
+                </Field.Label>
+                <Input
+                  {...register("emailOrPhone")}
+                  placeholder="Nhập email hoặc số điện thoại"
+                  color="black"
+                />
+                <Field.ErrorText>{errors.emailOrPhone?.message}</Field.ErrorText>
+              </Field.Root>
+
+              {/* Password Field */}
+              <Field.Root invalid={!!errors.password}>
+                <Field.Label color="brand.500">Mật khẩu</Field.Label>
+                <PasswordInput
+                  {...register("password")}
+                  placeholder="Nhập mật khẩu"
+                  color="black"
+                />
+                <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
+              </Field.Root>
+            </Stack>
+
+            <HStack justify="space-between">
+              <Checkbox defaultChecked>Nhớ cho lần sau</Checkbox>
+            </HStack>
+
+            <Stack gap="4">
+              <Button type="submit" loading={isSubmitting} bg="brand.500Alpha80">
+                Đăng nhập
+              </Button>
+            </Stack>
           </Stack>
-          <HStack justify="space-between">
-            <Checkbox defaultChecked>Nhớ cho lần sau</Checkbox>
-          </HStack>
-          <Stack gap="4">
-            <Button
-              onClick={handleLogin}
-              loading={loading}
-              disabled={loading}
-              bg="brand.500Alpha80"
-            >
-              Đăng nhập
-            </Button>
-          </Stack>
-        </Stack>
+        </form>
 
         <Text textStyle="sm" color="brand.500" textAlign="center">
           Chưa có tài khoản?{" "}

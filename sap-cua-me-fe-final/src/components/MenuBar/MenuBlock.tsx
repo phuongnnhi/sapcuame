@@ -1,16 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Box, Container, HStack, IconButton, Image } from "@chakra-ui/react";
-import { SearchField } from "./search-field";
-import { SearchPopover } from "./search-popover";
-import { UserMenu } from "./user-menu";
+import { SearchField } from "./SearchField";
+import { SearchPopover } from "./SearchPopover";
+import { UserMenu } from "./UserMenu";
 import { useCallback } from "react";
-// import { MobilePopover } from './mobile-popover'
-import { NavbarLinks } from "./navbar-links";
+import { NavbarLinks } from "./NavbarLinks";
 import Link from "next/link";
 import { LuShoppingCart } from "react-icons/lu";
 import { getProducts } from "@/app/apiFunctions";
-import { MobilePopover } from "./mobile-popover";
+import { MobilePopover } from "./MobilePopover";
 
 export const MenuBlock = () => {
   const [visible, setVisible] = useState(true);

@@ -8,7 +8,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { LuMenu } from "react-icons/lu";
-import { NavbarLinks } from "./navbar-links";
+import { NavbarLinks } from "./NavbarLinks";
 
 export const MobilePopover = () => {
   return (
